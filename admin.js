@@ -1,0 +1,128 @@
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDlFYzg5Te2jz-kVKXd0yGYlJkMwU9fxss",
+  authDomain: "ju-civil-a-martian.firebaseapp.com",
+  projectId: "ju-civil-a-martian",
+  storageBucket: "ju-civil-a-martian.appspot.com",
+  messagingSenderId: "247448010406",
+  appId: "1:247448010406:web:a2efa79a4080513cc87e67",
+  measurementId: "G-BXYMLKE395"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// --- Go to Home ---
+document.getElementById('gotoMainBtn').onclick = () => window.location.href = "mainpage.html";
+
+// --- Alert Helper ---
+function showAlert(msg, color="#ff4040") {
+  const alert = document.getElementById('adminAlert');
+  alert.textContent = msg;
+  alert.style.background = color;
+  alert.classList.add('show');
+  setTimeout(() => alert.classList.remove('show'), 3500);
+}
+
+// --- Floating Card 3D Animation ---
+document.querySelectorAll('.float-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+    card.style.transform = `perspective(1200px) rotateY(${x/18}deg) rotateX(${-y/18}deg) scale(1.03)`;
+    card.style.boxShadow = "0 16px 64px #ff8a0033, 0 6px 32px #1a1a2e88, 0 0 24px #ff8a00cc";
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = "";
+    card.style.boxShadow = "";
+  });
+});
+
+// --- Dynamic Falling Stars ---
+function spawnFallingStar() {
+  const star = document.createElement('div');
+  star.className = 'falling-star';
+  star.style.left = `${Math.random() * 100}vw`;
+  star.style.top = `${Math.random() * 10}vh`;
+  star.style.opacity = Math.random() * 0.5 + 0.5;
+  star.style.width = `${1.5 + Math.random() * 2}px`;
+  star.style.height = `${18 + Math.random() * 18}px`;
+  document.body.appendChild(star);
+  setTimeout(() => star.remove(), 2600);
+}
+setInterval(spawnFallingStar, 300);
+
+// --- ANNOUNCEMENT FORM ---
+document.getElementById('announcementForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const title = document.getElementById('annTitle').value.trim();
+  const desc = document.getElementById('annDesc').value.trim();
+  const date = document.getElementById('annDate').value;
+  const priority = document.getElementById('annPriority').value;
+  if (!title || !desc || !date || !priority) return showAlert("All fields required!");
+  try {
+    await db.collection('announcements').add({ title, desc, date, priority });
+    showAlert("Announcement uploaded!", "#1bbf3b");
+    this.reset();
+  } catch (err) {
+    showAlert("Error: " + err.message);
+  }
+};
+
+// --- GALLERY FORM ---
+document.getElementById('galleryForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const title = document.getElementById('galleryTitle').value.trim();
+  const file = document.getElementById('galleryImg').files[0];
+  if (!title || !file) return showAlert("All fields required!");
+  try {
+    const storageRef = storage.ref('gallery/' + Date.now() + '_' + file.name);
+    const snap = await storageRef.put(file);
+    const imgUrl = await snap.ref.getDownloadURL();
+    await db.collection('gallery').add({ title, imgUrl, uploadedAt: new Date().toISOString() });
+    showAlert("Gallery image uploaded!", "#1bbf3b");
+    this.reset();
+  } catch (err) {
+    showAlert("Error: " + err.message);
+  }
+};
+
+// --- RESOURCE FORM ---
+document.getElementById('resourceForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const title = document.getElementById('resourceTitle').value.trim();
+  const link = document.getElementById('resourceLink').value.trim();
+  const file = document.getElementById('resourcePdf').files[0];
+  if (!title) return showAlert("Title required!");
+  try {
+    let url = link;
+    if (!url && file) {
+      const storageRef = storage.ref('resources/' + Date.now() + '_' + file.name);
+      const snap = await storageRef.put(file);
+      url = await snap.ref.getDownloadURL();
+    }
+    if (!url) return showAlert("Provide a link or upload a PDF!");
+    await db.collection('resources').add({ title, url, uploadedAt: new Date().toISOString() });
+    showAlert("Resource uploaded!", "#1bbf3b");
+    this.reset();
+  } catch (err) {
+    showAlert("Error: " + err.message);
+  }
+};
+
+// --- EVENT/SCHEDULE FORM ---
+document.getElementById('eventForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const title = document.getElementById('eventTitle').value.trim();
+  const desc = document.getElementById('eventDesc').value.trim();
+  const date = document.getElementById('eventDate').value;
+  if (!title || !desc || !date) return showAlert("All fields required!");
+  try {
+    await db.collection('schedule').add({ title, desc, date });
+    showAlert("Event/Schedule uploaded!", "#1bbf3b");
+    this.reset();
+  } catch (err) {
+    showAlert("Error: " + err.message);
+  }
+};
