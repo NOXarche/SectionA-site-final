@@ -10,13 +10,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
-    <div class="code-particles"></div>
+    <canvas id="mars-bg"></canvas>
     <div class="stars"></div>
-    <div class="meteor-shower"></div>
     <div class="particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -115,6 +113,20 @@
                             <div class="input-focus-effect"></div>
                         </div>
                         <small class="hint-text">Enter your 12-digit roll number</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerSubsection">Subsection</label>
+                        <div class="select-wrapper">
+                            <span class="material-icons">group</span>
+                            <select id="registerSubsection" required>
+                                <option value="">Select subsection</option>
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="A3">A3</option>
+                            </select>
+                            <div class="input-focus-effect"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
