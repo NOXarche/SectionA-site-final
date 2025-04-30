@@ -242,6 +242,7 @@ loginForm.addEventListener('submit', async (e) => {
         // Store user session
         sessionStorage.setItem('userRoll', roll);
         sessionStorage.setItem('userName', userData.name || 'User');
+        sessionStorage.setItem('userSubsection', userData.subsection || '');
         sessionStorage.setItem('isAdmin', isAdmin);
         
         hideLoading();
@@ -263,12 +264,18 @@ registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('registerName').value.trim();
     const roll = document.getElementById('registerRoll').value.trim();
+    const subsection = document.getElementById('registerSubsection').value;
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     
     // Validate roll number format (12 digits)
     if (!/^\d{12}$/.test(roll)) {
         showErrorMessage("Roll number must be 12 digits");
+        return;
+    }
+    
+    if (!subsection) {
+        showErrorMessage("Please select a subsection");
         return;
     }
     
@@ -294,25 +301,27 @@ registerForm.addEventListener('submit', async (e) => {
             return;
         }
         
+        // Determine role based on roll number
+        const role = adminRollNumbers.includes(roll) ? "admin" : "student";
+        
         // Save user to Firestore
         await db.collection('users').doc(roll).set({
             name,
             roll,
-            password,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            role,
+            subsection,
+            password
         });
-        
-        // Check if admin
-        const isAdmin = adminRollNumbers.includes(roll);
         
         // Store user session
         sessionStorage.setItem('userRoll', roll);
         sessionStorage.setItem('userName', name);
-        sessionStorage.setItem('isAdmin', isAdmin);
+        sessionStorage.setItem('userSubsection', subsection);
+        sessionStorage.setItem('isAdmin', role === "admin");
         
         hideLoading();
         
-        if (isAdmin) {
+        if (role === "admin") {
             showSuccessModal("Account created successfully! You have admin privileges.", true);
         } else {
             showSuccessModal("Account created successfully!");
@@ -324,81 +333,87 @@ registerForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Create animated code particles
-function createCodeParticle() {
-    const codeParticles = document.querySelector('.code-particles');
-    const codeSymbols = [
-        '{ code }', 
-        '<div>', 
-        'function()', 
-        'if (true) {}', 
-        '// comment', 
-        'const x = 10;', 
-        'return data;',
-        'async await',
-        'import React',
-        '[1, 2, 3]'
-    ];
+// Mars Background Animation
+function drawMarsScene() {
+    const canvas = document.getElementById('mars-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
 
-    const particle = document.createElement('span');
-    particle.className = 'code-particle';
-    particle.textContent = codeSymbols[Math.floor(Math.random() * codeSymbols.length)];
+    // Mars
+    const marsX = w * 0.8;
+    const marsY = h * 0.85;
+    const marsR = Math.min(w, h) * 0.13;
+    ctx.save();
+    const grad = ctx.createRadialGradient(marsX, marsY, marsR * 0.2, marsX, marsY, marsR);
+    grad.addColorStop(0, "#ff9652");
+    grad.addColorStop(0.8, "#b22222");
+    grad.addColorStop(1, "#7a1c1c");
+    ctx.beginPath();
+    ctx.arc(marsX, marsY, marsR, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.shadowColor = "#ff6f3c";
+    ctx.shadowBlur = 40;
+    ctx.fill();
+    ctx.restore();
 
-    // Random positioning
-    particle.style.left = `${Math.random() * 100}%`;
-    particle.style.top = `${Math.random() * 100}%`;
+    // Mars craters
+    for (let i = 0; i < 7; i++) {
+        const angle = Math.random() * Math.PI;
+        const r = marsR * (0.4 + Math.random() * 0.4);
+        const x = marsX + Math.cos(angle) * r * 0.7;
+        const y = marsY + Math.sin(angle) * r * 0.5;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, marsR * (0.06 + Math.random() * 0.04), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(120,40,40,0.22)";
+        ctx.fill();
+        ctx.restore();
+    }
 
-    // Random size
-    particle.style.fontSize = `${Math.floor(10 + Math.random() * 8)}px`;
+    // Mars moons
+    const now = Date.now() / 1000;
+    for (let i = 0; i < 2; i++) {
+        const moonR = marsR * (0.12 + 0.07 * i);
+        const angle = now * (0.7 + i * 1.3) + i * Math.PI;
+        const x = marsX + Math.cos(angle) * (marsR * (1.7 + i * 0.5));
+        const y = marsY + Math.sin(angle) * (marsR * (1.3 + i * 0.4));
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, moonR, 0, Math.PI * 2);
+        ctx.fillStyle = i === 0 ? "#e4e4e4" : "#b0aeb1";
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.restore();
+    }
 
-    // Set animation timing
-    const duration = 5 + Math.random() * 10;
-    const delay = Math.random() * 5;
-
-    particle.style.animationDuration = `${duration}s`;
-    particle.style.animationDelay = `${delay}s`;
-
-    codeParticles.appendChild(particle);
-
-    // Remove after animation completes
-    setTimeout(() => {
-        particle.remove();
-    }, (duration + delay) * 1000);
+    // Twinkling stars
+    for (let i = 0; i < 70; i++) {
+        const sx = Math.random() * w;
+        const sy = Math.random() * h * 0.7;
+        const sr = Math.random() * 1.3 + 0.3;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.globalAlpha = 0.7 + 0.3 * Math.sin(now * 2 + i);
+        ctx.fillStyle = "#fff";
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.restore();
+    }
 }
 
-// Create meteor animation
-function createMeteor() {
-    const meteorShower = document.querySelector('.meteor-shower');
-    const meteor = document.createElement('div');
-    meteor.className = 'meteor';
-    
-    // Random position and angle
-    const startX = Math.random() * 100;
-    const angle = 45 + Math.random() * 10;
-    
-    meteor.style.left = `${startX}%`;
-    meteor.style.top = '0';
-    meteor.style.transform = `rotate(${angle}deg)`;
-    meteor.style.animationDuration = `${Math.random() * 2 + 1}s`;
-    
-    meteorShower.appendChild(meteor);
-    
-    // Remove after animation
-    setTimeout(() => {
-        meteor.remove();
-    }, 3000);
+// Animate Mars scene
+function animateMars() {
+    drawMarsScene();
+    requestAnimationFrame(animateMars);
 }
 
 // Initialize animations
-document.addEventListener('DOMContentLoaded', function () {
-    // Create initial code particles
-    for (let i = 0; i < 15; i++) {
-        createCodeParticle();
-    }
-
-    // Create new code particles at intervals
-    setInterval(createCodeParticle, 2000);
-    
-    // Create meteors at intervals
-    setInterval(createMeteor, 5000);
-});
+window.addEventListener('resize', drawMarsScene);
+document.addEventListener('DOMContentLoaded', animateMars);
