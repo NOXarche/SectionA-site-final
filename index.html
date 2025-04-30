@@ -7,16 +7,17 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Starfield background (new) -->
+  <!-- Animated Starfield Background -->
   <canvas id="starfield"></canvas>
 
-  <!-- Parallax Layers -->
-  <img src="assets/parallax-bg.png" class="parallax-bg" alt="" />
-  <img src="assets/parallax-mid.png" class="parallax-mid" alt="" />
-  <img src="assets/parallax-fg.png" class="parallax-fg" alt="" />
-  <img src="assets/rover.png" class="parallax-rover" alt="" />
-  <!-- Extra Astronomical Layer -->
-  <img src="assets/asteroid.png" class="parallax-asteroid" alt="Asteroid" />
+  <!-- Parallax Layers: SVGs instead of images -->
+  <svg class="parallax-bg" viewBox="0 0 1920 400" preserveAspectRatio="none"><defs><linearGradient id="bggrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#23234d"/><stop offset="100%" stop-color="#3c1518"/></linearGradient></defs><rect width="1920" height="400" fill="url(#bggrad)"/><ellipse cx="1600" cy="250" rx="200" ry="60" fill="#2d2959" opacity="0.6"/><ellipse cx="400" cy="320" rx="180" ry="40" fill="#40203b" opacity="0.5"/></svg>
+  <svg class="parallax-mid" viewBox="0 0 1920 400" preserveAspectRatio="none"><ellipse cx="960" cy="380" rx="700" ry="80" fill="#2e1b47" opacity="0.5"/><ellipse cx="300" cy="390" rx="120" ry="30" fill="#4e2d5c" opacity="0.4"/></svg>
+  <svg class="parallax-fg" viewBox="0 0 1920 400" preserveAspectRatio="none"><ellipse cx="960" cy="400" rx="900" ry="100" fill="#a22e00" opacity="0.35"/><ellipse cx="1700" cy="390" rx="90" ry="20" fill="#ff8a00" opacity="0.22"/></svg>
+  <!-- Mars rover as SVG -->
+  <svg class="parallax-rover" width="120" height="60" viewBox="0 0 120 60"><g><ellipse cx="60" cy="50" rx="35" ry="8" fill="#1a1a2e" opacity="0.4"/><rect x="40" y="30" width="40" height="14" rx="5" fill="#aaa"/><circle cx="50" cy="48" r="6" fill="#444"/><circle cx="90" cy="48" r="6" fill="#444"/><rect x="70" y="20" width="10" height="10" rx="2" fill="#ff8a00"/><rect x="80" y="28" width="6" height="6" rx="1" fill="#c1440e"/></g></svg>
+  <!-- Asteroid as SVG -->
+  <svg class="parallax-asteroid" width="60" height="60" viewBox="0 0 60 60"><ellipse cx="30" cy="30" rx="18" ry="13" fill="#c1440e"/><ellipse cx="38" cy="36" rx="4" ry="2" fill="#a22e00" opacity="0.7"/><ellipse cx="22" cy="28" rx="2" ry="1" fill="#fff" opacity="0.2"/></svg>
 
   <!-- Particle (dust) animation -->
   <canvas id="particles"></canvas>
@@ -42,7 +43,7 @@
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <h1 class="hero-title">Ready to be part of Section A's legacy?</h1>
+      <h1 class="hero-title">Ready to be part of Section A’s legacy?</h1>
       <div class="hero-desc">
         <span id="typed-text"></span><span class="cursor"></span>
       </div>
@@ -60,7 +61,13 @@
   <section class="section mission-section" id="mission">
     <h2>Our Mission</h2>
     <div class="mission-blueprint">
-      <img src="assets/blueprint.png" class="blueprint-img" alt="Blueprint" />
+      <!-- Blueprint as SVG -->
+      <svg class="blueprint-img" width="320" height="120" viewBox="0 0 320 120">
+        <rect x="10" y="30" width="300" height="60" rx="20" fill="#23234d" stroke="#ff8a00" stroke-width="2"/>
+        <ellipse cx="70" cy="60" rx="16" ry="16" fill="#40203b"/>
+        <ellipse cx="250" cy="60" rx="14" ry="14" fill="#a22e00"/>
+        <rect x="150" y="45" width="20" height="30" rx="5" fill="#ff8a00"/>
+      </svg>
       <div class="blueprint-overlay"></div>
       <span class="blueprint-label">Mars 2040</span>
     </div>
@@ -95,9 +102,30 @@
   <section class="section memories-preview" id="memories">
     <h2>Memories</h2>
     <div class="gallery-row">
-      <div class="gallery-card"><img src="assets/mem1.jpg" alt="Memory 1" /></div>
-      <div class="gallery-card"><img src="assets/mem2.jpg" alt="Memory 2" /></div>
-      <div class="gallery-card"><img src="assets/mem3.jpg" alt="Memory 3" /></div>
+      <div class="gallery-card">
+        <!-- SVG memory 1 -->
+        <svg width="100%" height="100%" viewBox="0 0 180 140">
+          <rect width="180" height="140" rx="18" fill="#23234d"/>
+          <circle cx="60" cy="80" r="28" fill="#ff8a00" opacity="0.8"/>
+          <ellipse cx="120" cy="60" rx="24" ry="18" fill="#a22e00" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="gallery-card">
+        <!-- SVG memory 2 -->
+        <svg width="100%" height="100%" viewBox="0 0 180 140">
+          <rect width="180" height="140" rx="18" fill="#3c1518"/>
+          <ellipse cx="90" cy="70" rx="38" ry="28" fill="#ff8a00" opacity="0.3"/>
+          <rect x="50" y="40" width="80" height="60" rx="14" fill="#1a1a2e" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="gallery-card">
+        <!-- SVG memory 3 -->
+        <svg width="100%" height="100%" viewBox="0 0 180 140">
+          <rect width="180" height="140" rx="18" fill="#a22e00"/>
+          <ellipse cx="90" cy="90" rx="30" ry="20" fill="#ff8a00" opacity="0.5"/>
+          <circle cx="120" cy="60" r="12" fill="#fff" opacity="0.15"/>
+        </svg>
+      </div>
     </div>
     <a href="#" class="gallery-link">View All Memories</a>
   </section>
@@ -146,7 +174,7 @@
 
   <!-- CTA Section -->
   <section class="cta-section">
-    <h2>Join Section A's Journey</h2>
+    <h2>Join Section A’s Journey</h2>
     <p>Sign up to access resources, updates, and connect with your batchmates!</p>
     <a href="#" class="signup-btn cta-btn">Sign Up</a>
   </section>
@@ -161,6 +189,10 @@
       </div>
     </div>
   </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
   <script src="script.js"></script>
 </body>
