@@ -1,0 +1,249 @@
+:root {
+  --primary: #ff8a00;
+  --primary-glow: #ffad42;
+  --secondary: #1a1a2e;
+  --accent: #3c1518;
+  --glass-bg: rgba(28,24,40,0.92);
+  --card-bg: rgba(28,24,40,0.95);
+  --neon: #ff8a00;
+  --neon-glow: 0 0 8px #ff8a00, 0 0 24px #ff8a00cc;
+  --text: #f3f3f3;
+  --orbitron: 'Orbitron', 'Audiowide', 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--orbitron);
+  background: linear-gradient(180deg, var(--secondary) 0%, var(--accent) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.7s, color 0.7s;
+}
+
+/* Dynamic Starfield (falling stars) */
+#star-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.falling-star {
+  position: absolute;
+  width: 2px;
+  height: 24px;
+  background: linear-gradient(180deg, #fff 60%, #ff8a00 100%);
+  border-radius: 50%;
+  opacity: 0.8;
+  box-shadow: 0 0 12px 2px #fff, 0 0 20px 6px #ff8a0033;
+  animation: star-fall 2.4s linear forwards;
+}
+@keyframes star-fall {
+  0% { opacity: 0.8; transform: translateY(-40px) scaleX(0.7) rotate(-10deg);}
+  10% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100vh) scaleX(1) rotate(10deg);}
+}
+
+/* Orbits and Rocket */
+.orbit-container {
+  position: fixed;
+  left: 50vw; top: 40vh;
+  pointer-events: none;
+  z-index: 2;
+}
+.orbit {
+  position: absolute;
+  border: 1.5px dashed #ff8a00aa;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: orbit-spin 24s linear infinite;
+}
+.orbit1 { width: 220px; height: 220px; margin-left: -110px; margin-top: -110px; animation-duration: 24s;}
+.orbit2 { width: 320px; height: 320px; margin-left: -160px; margin-top: -160px; animation-duration: 32s;}
+.orbit3 { width: 400px; height: 400px; margin-left: -200px; margin-top: -200px; animation-duration: 44s;}
+@keyframes orbit-spin { 100% { transform: rotate(360deg); } }
+.orbit-rocket {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  animation: rocket-orbit 12s linear infinite;
+}
+.orbit-rocket span {
+  font-size: 2.7rem;
+  filter: drop-shadow(0 0 8px #ff8a00cc);
+}
+@keyframes rocket-orbit {
+  0% { transform: translate(-50%, -50%) rotate(0deg) translateX(110px) rotate(0deg);}
+  100% { transform: translate(-50%, -50%) rotate(360deg) translateX(110px) rotate(-360deg);}
+}
+
+/* Parallax Martian Background */
+.martian-bg {
+  position: fixed;
+  z-index: 1;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-stars, .bg-mountains, .bg-dust {
+  position: absolute; left: 0; width: 100%; pointer-events: none;
+}
+.bg-stars {
+  top: 0; height: 100vh;
+  background: url('https://svgshare.com/i/16zT.svg') repeat-x top;
+  opacity: 0.3;
+  animation: starsMove 180s linear infinite;
+  z-index: 1;
+}
+@keyframes starsMove { 0%{background-position-x:0;} 100%{background-position-x:1000px;} }
+.bg-mountains {
+  bottom: 0; height: 60vh;
+  background: url('https://svgshare.com/i/16uG.svg') repeat-x bottom;
+  background-size: cover;
+  opacity: 0.7;
+  animation: mountainsMove 60s linear infinite;
+  z-index: 1;
+}
+@keyframes mountainsMove { 0%{background-position-x:0;} 100%{background-position-x:1000px;} }
+.bg-dust {
+  bottom: 0; height: 40vh;
+  background: url('https://svgshare.com/i/16uH.svg') repeat-x bottom;
+  background-size: cover;
+  opacity: 0.7;
+  animation: dustMove 24s linear infinite;
+  z-index: 1;
+}
+@keyframes dustMove { 0%{background-position-x:0;} 100%{background-position-x:1200px;} }
+
+.admin-section {
+  max-width: 1200px;
+  margin: 0 auto 2.5em auto;
+  padding: 2.5em 1.2em 1.5em 1.2em;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  transition: background 0.5s;
+}
+.admin-title {
+  font-family: var(--orbitron);
+  color: var(--neon);
+  font-size: 2.1rem;
+  margin-bottom: 1.2em;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.neon-btn {
+  font-family: var(--orbitron);
+  font-size: 1.05rem;
+  background: var(--neon);
+  color: #fff;
+  border: none;
+  border-radius: 0.8em;
+  padding: 0.7em 1.2em;
+  margin: 0.5em 0 1.2em 0;
+  box-shadow: 0 2px 12px #ff8a0033;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s, transform 0.2s;
+  text-shadow: var(--neon-glow);
+}
+.neon-btn:hover {
+  background: #c1440e;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 24px #ff8a00cc;
+}
+.admin-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+}
+.admin-card {
+  background: var(--glass-bg);
+  border-radius: 1.2em;
+  box-shadow: 0 8px 40px #ff8a0033, 0 2px 12px #1a1a2e55;
+  border: 1.5px solid #ff8a0022;
+  padding: 2em 2em 1.2em 2em;
+  width: 320px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 2em;
+  transition: box-shadow 0.3s, transform 0.3s;
+  will-change: transform;
+  position: relative;
+  z-index: 2;
+}
+.float-card {
+  transition: box-shadow 0.3s, transform 0.3s;
+  will-change: transform;
+  perspective: 1200px;
+  background: var(--glass-bg);
+  box-shadow: 0 8px 40px #ff8a0033, 0 2px 12px #1a1a2e55;
+}
+.float-card:hover {
+  transform: scale(1.03) translateY(-8px) rotateZ(-1deg);
+  box-shadow: 0 16px 64px #ff8a0033, 0 6px 32px #1a1a2e88, 0 0 24px #ff8a00cc;
+}
+.admin-card h2 {
+  font-family: var(--orbitron);
+  color: var(--neon);
+  font-size: 1.2rem;
+  margin-bottom: 0.7em;
+}
+.admin-card form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.admin-card input, .admin-card textarea, .admin-card select {
+  font-family: var(--orbitron);
+  font-size: 1em;
+  border-radius: 0.6em;
+  border: 1.5px solid var(--neon);
+  background: var(--glass-bg);
+  color: var(--neon);
+  padding: 0.5em 0.9em;
+  transition: border 0.2s, background 0.2s;
+}
+.admin-card input:focus, .admin-card textarea:focus, .admin-card select:focus {
+  border: 2px solid #ff8a00;
+  background: #181820;
+  color: #ff8a00;
+}
+.admin-card textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+.alert {
+  position: fixed;
+  top: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: #ff4040;
+  color: #fff;
+  padding: 1em 2em;
+  border-radius: 1em;
+  box-shadow: 0 2px 12px #ff404044;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.07rem;
+  z-index: 20000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.alert.show { opacity: 1; pointer-events: auto; }
+@media (max-width: 1100px) {
+  .admin-cards { flex-direction: column; align-items: center; }
+}
+@media (max-width: 600px) {
+  .orbit { display: none; }
+  .orbit-rocket { display: none; }
+  .admin-title { font-size: 1.2rem; }
+  .admin-card { padding: 1.2em 0.7em; width: 98vw; }
+}
