@@ -7,21 +7,27 @@
   <link rel="stylesheet" href="profile.css"/>
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <!-- Martian animated background -->
+  <!-- Dynamic Starfield and Orbits -->
+  <canvas id="star-bg"></canvas>
+  <div class="orbit-container">
+    <div class="orbit orbit1"></div>
+    <div class="orbit orbit2"></div>
+    <div class="orbit orbit3"></div>
+    <div class="orbit-rocket"><span>🚀</span></div>
+  </div>
+  <!-- Parallax Martian Background -->
   <div class="martian-bg">
     <div class="bg-stars"></div>
     <div class="bg-mountains"></div>
     <div class="bg-dust"></div>
   </div>
-
   <div class="section">
     <h2>Your Profile</h2>
-    <div class="profile-card float-card">
-      <div class="profile-avatar" id="profileAvatar">👩🚀</div>
+    <div class="profile-card float-card glassy">
+      <div class="profile-avatar" id="profileAvatar">🚀</div>
       <div class="profile-info">
         <div class="profile-row">
           <span>Name:</span>
@@ -49,7 +55,6 @@
       </div>
     </div>
   </div>
-
   <!-- Edit Name Modal -->
   <div class="modal" id="editNameModal">
     <div class="modal-content">
@@ -68,7 +73,6 @@
     <option value="A3">A3</option>
   </select>
   <button class="save-btn" id="saveSubsectionBtn" style="display:none;">Save</button>
-
   <!-- Change Password Modal -->
   <div class="modal" id="changePasswordModal">
     <div class="modal-content">
