@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile | JU Civil Martian</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="profile.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <!-- Martian animated background -->
+  <div class="martian-bg">
+    <div class="bg-stars"></div>
+    <div class="bg-mountains"></div>
+    <div class="bg-dust"></div>
+  </div>
+
+  <div class="section">
+    <h2>Your Profile</h2>
+    <div class="profile-card float-card">
+      <div class="profile-avatar" id="profileAvatar">👩🚀</div>
+      <div class="profile-info">
+        <div class="profile-row">
+          <span>Name:</span>
+          <span id="profileName"></span>
+          <button class="edit-btn" id="editNameBtn" title="Edit Name">Edit</button>
+        </div>
+        <div class="profile-row">
+          <span>Roll Number:</span>
+          <span id="profileRoll"></span>
+        </div>
+        <div class="profile-row">
+          <span>Subsection:</span>
+          <span id="profileSubsection"></span>
+          <button class="edit-btn" id="editSubsectionBtn" title="Edit Subsection">Edit</button>
+        </div>
+        <div class="profile-row">
+          <span>Role:</span>
+          <span id="profileRole"></span>
+          <span class="admin-badge" id="adminBadge" style="display:none;">ADMIN</span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="neon-btn" id="changePasswordBtn">Change Password</button>
+        <button class="neon-btn" id="gotoMainBtn">Back to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Name Modal -->
+  <div class="modal" id="editNameModal">
+    <div class="modal-content">
+      <h3>Edit Name</h3>
+      <form id="editNameForm">
+        <input type="text" id="editNameInput" required maxlength="50"/>
+        <button type="submit" class="neon-btn save-btn">Save</button>
+        <button type="button" class="neon-btn cancel-btn" id="cancelEditName">Cancel</button>
+      </form>
+    </div>
+  </div>
+  <!-- Edit Subsection Inline -->
+  <select id="subsectionSelect" class="edit-select" style="display:none;">
+    <option value="A1">A1</option>
+    <option value="A2">A2</option>
+    <option value="A3">A3</option>
+  </select>
+  <button class="save-btn" id="saveSubsectionBtn" style="display:none;">Save</button>
+
+  <!-- Change Password Modal -->
+  <div class="modal" id="changePasswordModal">
+    <div class="modal-content">
+      <h3>Change Password</h3>
+      <form id="changePasswordForm">
+        <input type="password" id="newPassword" placeholder="New Password" required minlength="6"/>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required minlength="6"/>
+        <button type="submit" class="neon-btn save-btn">Change</button>
+        <button type="button" class="neon-btn cancel-btn" id="cancelChangePassword">Cancel</button>
+      </form>
+    </div>
+  </div>
+  <script src="profile.js"></script>
+</body>
+</html>
