@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>JU Civil A | Martian Frontier</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader">
+    <div class="mars"></div>
+  </div>
+
+  <!-- Fixed Top Bar -->
+  <header class="top-bar">
+    <div class="logo">
+      <span class="logo-mars">🪐</span>
+      <span class="logo-text">JU Civil A</span>
+    </div>
+    <nav>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#faculty" class="nav-link">Faculty</a>
+      <a href="#memories" class="nav-link">Memories</a>
+      <a href="#announcements" class="nav-link">Announcements</a>
+      <a href="#signup" class="nav-link">Sign Up</a>
+      <a href="auth/index.html" class="login-top-btn">Login</a>
+    </nav>
+    <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark/light mode">
+      <span id="modeIcon">🌑</span>
+    </button>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="parallax-bg"></div>
+    <div class="parallax-mid"></div>
+    <div class="parallax-fg"></div>
+    <div class="parallax-rover"></div>
+    <canvas class="particles" id="particles"></canvas>
+    <div class="hero-content">
+      <div class="hero-title">
+        Martian Frontier: Civil Engineering Section A
+      </div>
+      <div class="hero-desc">
+        <span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <a href="#features" class="scroll-down">▼</a>
+      <div class="signal-strength">
+        <span class="signal-bar"></span>
+        <span class="signal-bar"></span>
+        <span class="signal-bar"></span>
+        <span class="signal-bar"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Section -->
+  <section class="section features-section" id="features">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">Resource Library</div>
+        <div class="feature-desc">Download notes, past papers, and references anytime.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">🖼️</div>
+        <div class="feature-title">Event Gallery</div>
+        <div class="feature-desc">Upload and browse photos from events and Martian adventures.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">📢</div>
+        <div class="feature-title">Instant Announcements</div>
+        <div class="feature-desc">Never miss a deadline or event-get notified instantly.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">🗓️</div>
+        <div class="feature-title">Smart Timetable</div>
+        <div class="feature-desc">Visualize your semester with a dynamic, interactive schedule.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Secure Login</div>
+        <div class="feature-desc">Your data is protected-login with your roll number and password.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">Batch Forum</div>
+        <div class="feature-desc">Discuss doubts, share ideas, and collaborate-coming soon!</div>
+      </div>
+    </div>
+    <div class="cta-row">
+      <!--a href="auth/index.html" class="cta-btn neon">Login to Portal</a-->
+    </div>
+  </section>
+
+  <!-- Faculty Section (No names or pictures) -->
+  <section class="section faculty-section" id="faculty">
+    <h2>Faculty</h2>
+    <div class="faculty-grid">
+      <p style="color: var(--highlight); font-family: 'Orbitron', sans-serif; text-align: center;">Faculty details are currently hidden.</p>
+    </div>
+  </section>
+
+  <!-- Memories Gallery Preview -->
+  <section class="section memories-preview" id="memories">
+    <h2>Section A Memories</h2>
+    <div class="gallery-row">
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Event 1" loading="lazy">
+        <div class="gallery-caption">Freshers' Day 2024</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Event 2" loading="lazy">
+        <div class="gallery-caption">Martian Model Expo</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80" alt="Event 3" loading="lazy">
+        <div class="gallery-caption">Night Study Marathon</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80" alt="Event 4" loading="lazy">
+        <div class="gallery-caption">Friendship on Mars</div>
+      </div>
+    </div>
+    <a href="auth/index.html" class="gallery-link">View Full Gallery →</a>
+  </section>
+
+  <!-- Announcements Board -->
+  <section class="section" id="announcements">
+    <h2>Announcements</h2>
+    <div class="announcements-board">
+      <div class="announcement-card high">
+        <div class="announcement-priority">🔥 High</div>
+        <div class="announcement-title">Mid-Sem Exam Dates Released</div>
+        <div class="announcement-desc">Check the schedule for all subjects. Good luck, Martians!</div>
+        <div class="announcement-date">29 Apr 2025</div>
+      </div>
+      <div class="announcement-card medium">
+        <div class="announcement-priority">⭐ Medium</div>
+        <div class="announcement-title">Project Group Allocation</div>
+        <div class="announcement-desc">Find your group and mentor for the Martian Habitat Project.</div>
+        <div class="announcement-date">28 Apr 2025</div>
+      </div>
+      <div class="announcement-card low">
+        <div class="announcement-priority">📅 Low</div>
+        <div class="announcement-title">Club Registrations Open</div>
+        <div class="announcement-desc">Join the Civil Innovators Club for workshops and fun!</div>
+        <div class="announcement-date">25 Apr 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action / Sign Up -->
+  <section class="section cta-section" id="signup">
+    <h2>Join the Martian Frontier</h2>
+    <p>
+      Ready to be part of Section A’s legacy?<br>
+      Sign up to access resources, updates, and connect with your batchmates!
+    </p>
+    <a href="auth/index.html" class="signup-btn cta-glow">Create Your Account</a>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      &copy; 2025 JU Civil Engineering Section A | Designed for Mars & Earth 🌑
+      <div class="footer-social">
+        <!-- Social icons as before -->
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
