@@ -33,7 +33,7 @@ document.querySelectorAll('.float-card').forEach(card => {
   });
 });
 
-// --- Firebase imports and config (compat for CDN) ---
+// --- Firebase config ---
 const firebaseConfig = {
   apiKey: "AIzaSyDlFYzg5Te2jz-kVKXd0yGYlJkMwU9fxss",
   authDomain: "ju-civil-a-martian.firebaseapp.com",
@@ -44,44 +44,42 @@ const firebaseConfig = {
   measurementId: "G-BXYMLKE395"
 };
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ========== SESSION CHECK & USER GREETING ==========
-auth.onAuthStateChanged(async (user) => {
-  if (!user) {
-    window.location.href = "auth/index.html";
-    return;
-  }
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists) {
-    alert("Profile not found!");
-    await auth.signOut();
-    window.location.href = "auth/index.html";
-    return;
-  }
-  const data = userDoc.data();
-  document.getElementById('userGreeting').textContent = `Hi, ${data.name}!`;
-  window.userSubsection = data.subsection || "A1";
-  document.getElementById('subsectionSelect').value = window.userSubsection;
-  if (data.role === "admin") {
-    window.location.href = "admin.html";
-  }
-  renderSchedule(window.userSubsection);
-});
+// --- SESSION CHECK & USER GREETING ---
+const roll = sessionStorage.getItem('userRoll');
+if (!roll) {
+  window.location.href = "auth/index.html";
+} else {
+  db.collection("users").doc(roll).get().then(userDoc => {
+    if (!userDoc.exists) {
+      alert("Profile not found!");
+      window.location.href = "auth/index.html";
+      return;
+    }
+    const data = userDoc.data();
+    document.getElementById('userGreeting').textContent = `Hi, ${data.name}!`;
+    window.userSubsection = data.subsection || "A1";
+    document.getElementById('subsectionSelect').value = window.userSubsection;
+    if (data.role === "admin") {
+      window.location.href = "/admin.html";
+    }
+    renderSchedule(window.userSubsection);
+  });
+}
 
-// ========== LOGOUT ==========
-document.getElementById('logoutBtn').onclick = async () => {
-  await auth.signOut();
+// --- LOGOUT ---
+document.getElementById('logoutBtn').onclick = () => {
+  sessionStorage.clear();
   window.location.href = "auth/index.html";
 };
 
-// ========== PROFILE BUTTON ==========
+// --- PROFILE BUTTON ---
 document.getElementById('profileBtn').onclick = () => {
   window.location.href = "profile.html";
 };
 
-// ========== THEME TOGGLE ==========
+// --- THEME TOGGLE ---
 const themeToggle = document.getElementById('themeToggle');
 let darkMode = true;
 themeToggle.onclick = () => {
@@ -95,10 +93,10 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matc
   darkMode = false;
 }
 
-// ========== REAL-TIME ANNOUNCEMENTS ==========
+// --- Announcements ---
 let announcements = [];
 db.collection("announcements").orderBy("createdAt", "desc")
-  .onSnapshot((snapshot) => {
+  .onSnapshot(snapshot => {
     announcements = [];
     snapshot.forEach(doc => announcements.push(doc.data()));
     renderAnnouncements(document.getElementById('announcementFilter').value || "all");
@@ -130,7 +128,7 @@ function renderAnnouncements(filter = "all") {
   });
 }
 
-// ========== SCHEDULE: Filter by user's subsection ==========
+// --- Schedule: Filter by user's subsection ---
 document.getElementById('subsectionSelect').addEventListener('change', function() {
   renderSchedule(this.value);
 });
@@ -154,7 +152,7 @@ function renderSchedule(subsection) {
     });
 }
 
-// ========== RESOURCES ==========
+// --- Resources ---
 db.collection("resources").orderBy("uploadedAt", "desc")
   .onSnapshot(snapshot => {
     const list = document.getElementById('resourcesList');
@@ -167,7 +165,7 @@ db.collection("resources").orderBy("uploadedAt", "desc")
     });
   });
 
-// ========== GALLERY ==========
+// --- Gallery ---
 db.collection("gallery").orderBy("uploadedAt", "desc")
   .onSnapshot(snapshot => {
     const carousel = document.getElementById('galleryCarousel');
@@ -182,7 +180,7 @@ db.collection("gallery").orderBy("uploadedAt", "desc")
     });
   });
 
-// ========== EVENTS ==========
+// --- Events ---
 db.collection("events").orderBy("date", "asc")
   .onSnapshot(snapshot => {
     const list = document.getElementById('eventsList');
@@ -195,7 +193,7 @@ db.collection("events").orderBy("date", "asc")
     });
   });
 
-// ========== Martian Daily Knowledge ==========
+// --- Martian Daily Knowledge ---
 const facts = [
   "Mars is home to the tallest mountain in the solar system, Olympus Mons.",
   "A year on Mars is 687 Earth days.",
@@ -209,7 +207,7 @@ function renderKnowledgeBubble() {
 }
 renderKnowledgeBubble();
 
-// ========== Student Corner ==========
+// --- Student Corner ---
 const studentMemories = [
   { text: "First Martian group project was a blast!", name: "Aditi" },
   { text: "Loved the Mars Rover demo in the lab.", name: "Rahul" },
@@ -226,7 +224,7 @@ function renderStudentCorner() {
 renderStudentCorner();
 document.getElementById('submitMemoryBtn').onclick = () => alert("Submit your memory (admin approval required, integrate with Firebase)!");
 
-// ========== PROJECTS & CLUBS ==========
+// --- Projects & Clubs (static for demo) ---
 const projects = [
   { title: "Mars Rover Bridge", team: "Team Ares", status: "Ongoing" },
   { title: "Hydroponics Dome", team: "GreenMartians", status: "Completed" },
@@ -247,7 +245,7 @@ function renderProjects() {
 }
 renderProjects();
 
-// ========== Weather ==========
+// --- Weather (static for demo) ---
 document.getElementById('weatherWidget').innerHTML = `
   <span class="weather-icon">☀️</span>
   <span class="weather-temp">-60°C</span>
