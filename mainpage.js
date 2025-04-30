@@ -58,7 +58,7 @@ if (!roll) {
       return;
     }
     const data = userDoc.data();
-    document.getElementById('userGreeting').textContent = `Hi, ${data.name}!`;
+    document.getElementById('userGreeting').textContent = `Hi, ${data.name}! 🚀`;
     window.userSubsection = data.subsection || "A1";
     document.getElementById('subsectionSelect').value = window.userSubsection;
     if (data.role === "admin") {
@@ -95,7 +95,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matc
 
 // --- Announcements ---
 let announcements = [];
-db.collection("announcements").orderBy("createdAt", "desc")
+db.collection("announcements").orderBy("date", "desc")
   .onSnapshot(snapshot => {
     announcements = [];
     snapshot.forEach(doc => announcements.push(doc.data()));
@@ -174,7 +174,7 @@ db.collection("gallery").orderBy("uploadedAt", "desc")
       const g = doc.data();
       const img = document.createElement('img');
       img.src = g.imgUrl;
-      img.alt = g.title;
+      img.alt = g.title || "Gallery Image";
       img.className = "carousel-img";
       carousel.appendChild(img);
     });
