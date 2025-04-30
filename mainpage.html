@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Martian Civils - JU Section A</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="mainpage.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <!-- Dynamic Martian background -->
+  <canvas id="star-bg"></canvas>
+  <div class="orbit-container">
+    <div class="orbit orbit1"></div>
+    <div class="orbit orbit2"></div>
+    <div class="orbit orbit3"></div>
+    <div class="orbit-planet"></div>
+    <div class="orbit-rocket"><span>🚀</span></div>
+  </div>
+  <div class="martian-bg">
+    <div class="bg-stars"></div>
+    <div class="bg-mountains"></div>
+    <div class="bg-dust"></div>
+  </div>
+  <nav class="navbar">
+    <div class="logo-title">
+      <span class="logo">🪐</span>
+      <span class="site-title">Martian Civils</span>
+      <span class="year">(2024–28)</span>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="profileBtn" title="Profile">👤</button>
+      <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌑</button>
+      <button class="logout-btn icon-btn" id="logoutBtn" title="Logout">⎋</button>
+    </div>
+  </nav>
+  <div class="section">
+    <h2 id="userGreeting">Hi, Martian!</h2>
+    <!-- Announcements -->
+    <div class="announcements-section glassy float-card">
+      <h3 class="neon">Live Announcements</h3>
+      <div class="announcements-controls">
+        <select id="announcementFilter">
+          <option value="all">All</option>
+          <option value="today">Today</option>
+          <option value="high">High Priority</option>
+        </select>
+      </div>
+      <ul class="announcements-feed" id="announcementsFeed"></ul>
+    </div>
+    <!-- Today's Schedule -->
+    <div class="schedule-section glassy float-card">
+      <h3 class="neon">Today's Schedule</h3>
+      <div class="subsection-picker">
+        <label for="subsectionSelect">Subsection:</label>
+        <select id="subsectionSelect">
+          <option value="A1">A1</option>
+          <option value="A2">A2</option>
+          <option value="A3">A3</option>
+        </select>
+      </div>
+      <div class="schedule-timeline" id="scheduleTimeline"></div>
+    </div>
+    <!-- Resources -->
+    <div class="resources-section glassy float-card">
+      <h3 class="neon">Resources</h3>
+      <ul class="resources-list" id="resourcesList"></ul>
+    </div>
+    <!-- Gallery -->
+    <div class="gallery-preview-section glassy float-card">
+      <h3 class="neon">Gallery</h3>
+      <div class="gallery-carousel" id="galleryCarousel"></div>
+      <a href="#" class="gallery-link">View Full Gallery →</a>
+    </div>
+    <!-- Events -->
+    <div class="events-section glassy float-card">
+      <h3 class="neon">Events</h3>
+      <ul class="events-list" id="eventsList"></ul>
+    </div>
+    <!-- Martian Daily Knowledge -->
+    <div class="knowledge-bubble glassy float-card">
+      <h3 class="neon">Martian Daily Knowledge</h3>
+      <div class="bubble-content" id="knowledgeBubble"></div>
+    </div>
+    <!-- Student Corner -->
+    <div class="student-corner-section glassy float-card">
+      <h3 class="neon">Student Corner</h3>
+      <div class="student-corner-content" id="studentCorner"></div>
+    </div>
+    <!-- Projects & Clubs -->
+    <div class="projects-section glassy float-card">
+      <h3 class="neon">Projects & Clubs</h3>
+      <div class="projects-grid" id="projectsGrid"></div>
+    </div>
+    <!-- Weather -->
+    <div class="weather-section glassy float-card">
+      <h3 class="neon">Martian Weather</h3>
+      <div class="weather-widget" id="weatherWidget"></div>
+    </div>
+  </div>
+  <footer class="footer glassy">
+    <div class="footer-links">
+      <a href="#">Contact</a> | <a href="#">About</a>
+    </div>
+    <div class="footer-credit">Made for <span class="neon">JU Martian Civils</span></div>
+  </footer>
+  <script src="mainpage.js"></script>
+</body>
+</html>
