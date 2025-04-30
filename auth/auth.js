@@ -179,7 +179,7 @@ function showSuccessModal(message, isAdmin = false) {
     
     // Set redirect based on user role
     successDoneBtn.onclick = () => {
-        window.location.href = isAdmin ? 'admin.html' : 'mainpage.html';
+        window.location.href = isAdmin ? 'admin.html' : '/mainpage.html';
     };
 }
 
