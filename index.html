@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section A Legacy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Starfield background (new) -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Parallax Layers -->
+  <img src="assets/parallax-bg.png" class="parallax-bg" alt="" />
+  <img src="assets/parallax-mid.png" class="parallax-mid" alt="" />
+  <img src="assets/parallax-fg.png" class="parallax-fg" alt="" />
+  <img src="assets/rover.png" class="parallax-rover" alt="" />
+  <!-- Extra Astronomical Layer -->
+  <img src="assets/asteroid.png" class="parallax-asteroid" alt="Asteroid" />
+
+  <!-- Particle (dust) animation -->
+  <canvas id="particles"></canvas>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="mars"></div>
+  </div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo"><span class="logo-mars">🪐</span> Section A</div>
+    <nav>
+      <a href="#mission" class="nav-link">Mission</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#memories" class="nav-link">Memories</a>
+      <a href="#announcements" class="nav-link">Announcements</a>
+      <button class="login-top-btn" id="loginTopBtn">Login</button>
+      <button class="mode-toggle" id="modeToggle"><span id="modeIcon">🌑</span></button>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Ready to be part of Section A's legacy?</h1>
+      <div class="hero-desc">
+        <span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <a href="#login" class="scroll-down" aria-label="Scroll Down">↓</a>
+      <div class="signal-strength">
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="section mission-section" id="mission">
+    <h2>Our Mission</h2>
+    <div class="mission-blueprint">
+      <img src="assets/blueprint.png" class="blueprint-img" alt="Blueprint" />
+      <div class="blueprint-overlay"></div>
+      <span class="blueprint-label">Mars 2040</span>
+    </div>
+    <div class="mission-text">
+      Building a legacy, one batch at a time. Section A is more than a class-it's a journey to the stars.
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section" id="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">🚀</div>
+        <div class="feature-title">Batch Announcements</div>
+        <div class="feature-desc">Stay updated with the latest news and events.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">Shared Resources</div>
+        <div class="feature-desc">Access notes, lectures, and study material.</div>
+      </div>
+      <div class="feature-card tilt-card">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-title">Batchmate Connect</div>
+        <div class="feature-desc">Find and connect with your classmates.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memories Section -->
+  <section class="section memories-preview" id="memories">
+    <h2>Memories</h2>
+    <div class="gallery-row">
+      <div class="gallery-card"><img src="assets/mem1.jpg" alt="Memory 1" /></div>
+      <div class="gallery-card"><img src="assets/mem2.jpg" alt="Memory 2" /></div>
+      <div class="gallery-card"><img src="assets/mem3.jpg" alt="Memory 3" /></div>
+    </div>
+    <a href="#" class="gallery-link">View All Memories</a>
+  </section>
+
+  <!-- Announcements Section -->
+  <section class="section announcements-board" id="announcements">
+    <h2>Announcements</h2>
+    <div class="announcement-card high">
+      <div class="announcement-priority">High</div>
+      <div class="announcement-title">Final Exams Schedule</div>
+      <div class="announcement-desc">Check out the updated schedule for finals.</div>
+      <div class="announcement-date">May 2025</div>
+    </div>
+    <div class="announcement-card medium">
+      <div class="announcement-priority">Medium</div>
+      <div class="announcement-title">Resource Uploads</div>
+      <div class="announcement-desc">New notes and lectures added to resources.</div>
+      <div class="announcement-date">April 2025</div>
+    </div>
+    <div class="announcement-card low">
+      <div class="announcement-priority">Low</div>
+      <div class="announcement-title">Batch Meetup</div>
+      <div class="announcement-desc">Join us for a virtual batch meetup soon!</div>
+      <div class="announcement-date">March 2025</div>
+    </div>
+  </section>
+
+  <!-- Login Section -->
+  <section class="section login-section" id="login">
+    <h2>Sign In</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required autocomplete="username" />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="login-btn cta-glow">Login</button>
+      <div class="login-info">
+        Not a member? <a href="#" class="signup-link">Sign up</a>
+      </div>
+    </form>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Join Section A's Journey</h2>
+    <p>Sign up to access resources, updates, and connect with your batchmates!</p>
+    <a href="#" class="signup-btn cta-btn">Sign Up</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>Section A &copy; 2025. Made with ❤️ for Mars explorers.</div>
+      <div class="footer-social">
+        <a href="#" class="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0022.4.36a9.09 9.09 0 01-2.88 1.1A4.52 4.52 0 0016.11 0c-2.5 0-4.52 2.02-4.52 4.51 0 .35.04.7.11 1.03C7.69 5.4 4.07 3.63 1.64.9c-.38.65-.6 1.4-.6 2.2 0 1.52.77 2.86 1.96 3.65A4.48 4.48 0 01.96 6v.06c0 2.13 1.52 3.9 3.54 4.3-.37.1-.76.16-1.16.16-.28 0-.55-.03-.82-.08.55 1.7 2.15 2.94 4.05 2.97A9.04 9.04 0 010 21.54a12.8 12.8 0 006.92 2.03c8.3 0 12.85-6.87 12.85-12.83 0-.2 0-.39-.01-.58A9.13 9.13 0 0023 3z"/></svg></a>
+        <a href="#" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.76 5.76 0 0122 7.75v8.5A5.76 5.76 0 0116.25 22h-8.5A5.76 5.76 0 012 16.25v-8.5A5.76 5.76 0 017.75 2zm0-2A7.76 7.76 0 000 7.75v8.5A7.76 7.76 0 007.75 24h8.5A7.76 7.76 0 0024 16.25v-8.5A7.76 7.76 0 0016.25 0h-8.5zM12 5.75A6.25 6.25 0 1112 18.25 6.25 6.25 0 0112 5.75zm0-2A8.25 8.25 0 1020.25 12 8.25 8.25 0 0012 3.75zM18.5 6.5a1.25 1.25 0 11-1.25-1.25A1.25 1.25 0 0118.5 6.5z"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
