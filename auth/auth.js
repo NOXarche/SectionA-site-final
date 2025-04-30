@@ -8,8 +8,6 @@ const firebaseConfig = {
     appId: "1:247448010406:web:a2efa79a4080513cc87e67",
     measurementId: "G-BXYMLKE395"
 };
-
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -46,11 +44,8 @@ function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
 }
-
-// Check for saved theme
 const savedTheme = localStorage.getItem('theme') || 'light';
 setTheme(savedTheme);
-
 themeToggle.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -61,17 +56,9 @@ themeToggle.addEventListener('click', () => {
 authTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         const tabTarget = tab.getAttribute('data-tab');
-        
-        // Update active tab
         authTabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        
-        // Hide all forms first
-        authForms.forEach(form => {
-            form.classList.remove('active');
-        });
-        
-        // Show the corresponding form
+        authForms.forEach(form => form.classList.remove('active'));
         document.getElementById(tabTarget + 'Form').classList.add('active');
     });
 });
@@ -81,7 +68,6 @@ document.querySelectorAll('.toggle-password').forEach(btn => {
     btn.addEventListener('click', () => {
         const input = btn.parentElement.querySelector('input');
         const icon = btn.querySelector('.material-icons');
-        
         if (input.type === 'password') {
             input.type = 'text';
             icon.textContent = 'visibility';
@@ -91,14 +77,10 @@ document.querySelectorAll('.toggle-password').forEach(btn => {
         }
     });
 });
-
-// Show password toggle button when input has content
 document.addEventListener("DOMContentLoaded", function () {
     const passwordInputs = document.querySelectorAll('input[type="password"]');
-
     passwordInputs.forEach(input => {
         const toggleBtn = input.parentElement.querySelector(".toggle-password");
-
         input.addEventListener("input", function () {
             toggleBtn.style.display = input.value.length > 0 ? "inline-block" : "none";
         });
@@ -110,19 +92,12 @@ registerPassword.addEventListener('input', () => {
     const password = registerPassword.value;
     const passwordStrengthContainer = document.querySelector('.password-strength');
     passwordStrengthContainer.style.display = password.length > 0 ? 'block' : 'none';
-
     const strength = checkPasswordStrength(password);
-    
-    // Reset all segments
-    strengthSegments.forEach(segment => {
-        segment.className = 'strength-segment';
-    });
-    
+    strengthSegments.forEach(segment => segment.className = 'strength-segment');
     if (password.length === 0) {
         strengthText.textContent = 'Password strength';
         return;
     }
-    
     if (strength === 'weak') {
         strengthSegments[0].classList.add('weak');
         strengthText.textContent = 'Weak';
@@ -136,13 +111,10 @@ registerPassword.addEventListener('input', () => {
         strengthSegments[2].classList.add('strong');
         strengthText.textContent = 'Strong';
     } else if (strength === 'very-strong') {
-        strengthSegments.forEach(segment => {
-            segment.classList.add('strong');
-        });
+        strengthSegments.forEach(segment => segment.classList.add('strong'));
         strengthText.textContent = 'Very Strong';
     }
 });
-
 function checkPasswordStrength(password) {
     const length = password.length;
     const hasLowerCase = /[a-z]/.test(password);
@@ -150,36 +122,22 @@ function checkPasswordStrength(password) {
     const hasNumbers = /\d/.test(password);
     const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const criteria = [hasLowerCase, hasUpperCase, hasNumbers, hasSpecialChars].filter(Boolean).length;
-    
-    if (length < 6) {
-        return 'weak';
-    } else if (length < 8 || criteria < 2) {
-        return 'medium';
-    } else if (length < 10 || criteria < 3) {
-        return 'strong';
-    } else {
-        return 'very-strong';
-    }
+    if (length < 6) return 'weak';
+    else if (length < 8 || criteria < 2) return 'medium';
+    else if (length < 10 || criteria < 3) return 'strong';
+    else return 'very-strong';
 }
 
 // Show Loading
-function showLoading() {
-    loadingOverlay.classList.add('active');
-}
-
-// Hide Loading
-function hideLoading() {
-    loadingOverlay.classList.remove('active');
-}
+function showLoading() { loadingOverlay.classList.add('active'); }
+function hideLoading() { loadingOverlay.classList.remove('active'); }
 
 // Show Success Modal
 function showSuccessModal(message, isAdmin = false) {
     successMessage.textContent = message;
     successModal.classList.add('active');
-    
-    // Set redirect based on user role
     successDoneBtn.onclick = () => {
-        window.location.href = isAdmin ? 'admin.html' : '/mainpage.html';
+        window.location.href = isAdmin ? "/admin.html" : "/mainpage.html";
     };
 }
 
@@ -187,71 +145,50 @@ function showSuccessModal(message, isAdmin = false) {
 function showErrorMessage(message) {
     const errorAlert = document.getElementById('error-alert');
     const backdrop = document.getElementById('backdrop');
-    
     const alertMessageElement = errorAlert.querySelector('.alert-message');
     alertMessageElement.textContent = message;
-
     backdrop.classList.add('active');
     errorAlert.classList.add('show');
-    
     setTimeout(() => {
         errorAlert.classList.remove('show');
-        
-        setTimeout(() => {
-            backdrop.classList.remove('active');
-        }, 500);
+        setTimeout(() => backdrop.classList.remove('active'), 500);
     }, 4000);
 }
 
-// Login Form Submit
+// Login
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const roll = document.getElementById('loginRoll').value.trim();
     const password = document.getElementById('loginPassword').value;
-    
-    // Validate roll number format (12 digits)
     if (!/^\d{12}$/.test(roll)) {
         showErrorMessage("Roll number must be 12 digits");
         return;
     }
-    
     try {
         showLoading();
-        
-        // Check if user exists in Firestore
         const userDoc = await db.collection('users').doc(roll).get();
-        
         if (!userDoc.exists) {
             hideLoading();
             showErrorMessage("Roll number not registered");
             return;
         }
-        
         const userData = userDoc.data();
-        
-        // Check password
         if (userData.password !== password) {
             hideLoading();
             showErrorMessage("Incorrect password");
             return;
         }
-        
-        // Check if admin
         const isAdmin = adminRollNumbers.includes(roll);
-        
-        // Store user session
         sessionStorage.setItem('userRoll', roll);
         sessionStorage.setItem('userName', userData.name || 'User');
         sessionStorage.setItem('userSubsection', userData.subsection || '');
-        sessionStorage.setItem('isAdmin', isAdmin);
-        
+        sessionStorage.setItem('userRole', userData.role || (isAdmin ? "admin" : "student"));
         hideLoading();
-        
-        if (isAdmin) {
-            showSuccessModal("Welcome to Admin Dashboard! You can now manage announcements, gallery, resources, and schedule.", true);
-        } else {
-            showSuccessModal("Login successful! Welcome back.");
-        }
+        showSuccessModal(isAdmin
+            ? "Welcome to Admin Dashboard! You can now manage announcements, gallery, resources, and schedule."
+            : "Login successful! Welcome back.",
+            isAdmin
+        );
     } catch (error) {
         hideLoading();
         showErrorMessage("Login failed: " + error.message);
@@ -259,7 +196,7 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Register Form Submit
+// Register
 registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('registerName').value.trim();
@@ -267,44 +204,31 @@ registerForm.addEventListener('submit', async (e) => {
     const subsection = document.getElementById('registerSubsection').value;
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Validate roll number format (12 digits)
     if (!/^\d{12}$/.test(roll)) {
         showErrorMessage("Roll number must be 12 digits");
         return;
     }
-    
     if (!subsection) {
         showErrorMessage("Please select a subsection");
         return;
     }
-    
     if (password !== confirmPassword) {
         showErrorMessage("Passwords do not match");
         return;
     }
-    
     if (password.length < 6) {
         showErrorMessage("Password must be at least 6 characters");
         return;
     }
-    
     try {
         showLoading();
-        
-        // Check if roll number already exists
         const userDoc = await db.collection('users').doc(roll).get();
-        
         if (userDoc.exists) {
             hideLoading();
             showErrorMessage("Roll number already registered");
             return;
         }
-        
-        // Determine role based on roll number
         const role = adminRollNumbers.includes(roll) ? "admin" : "student";
-        
-        // Save user to Firestore
         await db.collection('users').doc(roll).set({
             name,
             roll,
@@ -312,20 +236,17 @@ registerForm.addEventListener('submit', async (e) => {
             subsection,
             password
         });
-        
-        // Store user session
         sessionStorage.setItem('userRoll', roll);
         sessionStorage.setItem('userName', name);
         sessionStorage.setItem('userSubsection', subsection);
-        sessionStorage.setItem('isAdmin', role === "admin");
-        
+        sessionStorage.setItem('userRole', role);
         hideLoading();
-        
-        if (role === "admin") {
-            showSuccessModal("Account created successfully! You have admin privileges.", true);
-        } else {
-            showSuccessModal("Account created successfully!");
-        }
+        showSuccessModal(
+            role === "admin"
+                ? "Account created successfully! You have admin privileges."
+                : "Account created successfully!",
+            role === "admin"
+        );
     } catch (error) {
         hideLoading();
         showErrorMessage("Registration failed: " + error.message);
@@ -407,13 +328,9 @@ function drawMarsScene() {
         ctx.restore();
     }
 }
-
-// Animate Mars scene
 function animateMars() {
     drawMarsScene();
     requestAnimationFrame(animateMars);
 }
-
-// Initialize animations
 window.addEventListener('resize', drawMarsScene);
 document.addEventListener('DOMContentLoaded', animateMars);
