@@ -249,3 +249,130 @@ document.querySelectorAll(
     window.location.href = 'auth/index.html';
   });
 });
+// --- STARFIELD ANIMATION ---
+const starCanvas = document.getElementById('starfield');
+const starCtx = starCanvas.getContext('2d');
+let stars = [];
+
+function resizeStarfield() {
+  starCanvas.width = window.innerWidth;
+  starCanvas.height = window.innerHeight;
+  stars = Array.from({length: 120}, () => ({
+    x: Math.random() * starCanvas.width,
+    y: Math.random() * starCanvas.height,
+    r: Math.random() * 1.2 + 0.2,
+    speed: Math.random() * 0.2 + 0.05,
+    color: Math.random() > 0.3 ? '#fff' : (Math.random() > 0.5 ? '#8af' : '#ffa')
+  }));
+}
+
+function animateStars() {
+  starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+  for (let s of stars) {
+    starCtx.beginPath();
+    starCtx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+    starCtx.fillStyle = s.color;
+    starCtx.globalAlpha = 0.8;
+    starCtx.shadowBlur = 6;
+    starCtx.shadowColor = s.color;
+    starCtx.fill();
+    s.y += s.speed;
+    if (s.y > starCanvas.height) {
+      s.y = 0;
+      s.x = Math.random() * starCanvas.width;
+    }
+  }
+  requestAnimationFrame(animateStars);
+}
+
+resizeStarfield();
+animateStars();
+window.addEventListener('resize', resizeStarfield);
+
+// --- PARALLAX ZOOM EFFECT ON HERO ---
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const scrollY = window.scrollY;
+  const scale = 1 + Math.min(scrollY / 1200, 0.18);
+  hero.style.transform = `scale(${scale})`;
+});
+
+// --- EXTRA PARALLAX ASTEROID LAYER ---
+const asteroid = document.querySelector('.parallax-asteroid');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  if (asteroid) {
+    asteroid.style.transform = `translateY(${scrollY * 0.5}px) translateX(${scrollY * 0.2}px) rotate(${scrollY * 0.1}deg)`;
+  }
+});
+
+// --- CREATE RANDOM COMETS ---
+function createComet() {
+  const comet = document.createElement('div');
+  comet.classList.add('comet');
+  comet.style.top = `${Math.random() * 70}vh`;
+  comet.style.animationDuration = `${Math.random() * 4 + 6}s`;
+  comet.style.animationDelay = `${Math.random() * 10}s`;
+  document.body.appendChild(comet);
+  
+  // Remove comet after animation completes
+  setTimeout(() => {
+    comet.remove();
+  }, 15000);
+}
+
+// Create initial comets
+for (let i = 0; i < 2; i++) {
+  createComet();
+}
+
+// Create new comets periodically
+setInterval(createComet, 12000);
+
+// --- ACCESSIBILITY TOGGLE ---
+const accessibilityButton = document.createElement('button');
+accessibilityButton.classList.add('reduce-motion');
+accessibilityButton.innerHTML = '⚡';
+accessibilityButton.title = 'Toggle animations';
+document.body.appendChild(accessibilityButton);
+
+accessibilityButton.addEventListener('click', () => {
+  document.body.classList.toggle('reduced-motion');
+  accessibilityButton.innerHTML = document.body.classList.contains('reduced-motion') ? '✓' : '⚡';
+});
+
+// --- ENHANCED PARTICLE SYSTEM ---
+// Add occasional "nebula" particles to the existing particle system
+const originalCreateParticles = window.createParticles;
+if (typeof originalCreateParticles === 'function') {
+  window.createParticles = function() {
+    originalCreateParticles();
+    
+    // Add a few nebula particles
+    if (particles && particles.length) {
+      for (let i = 0; i < 5; i++) {
+        const p = particles[Math.floor(Math.random() * particles.length)];
+        if (p) {
+          p.r = Math.random() * 4 + 2; // Larger
+          p.color = Math.random() > 0.5 ? '#8af' : '#ffa'; // Blue or yellow tint
+          p.alpha = Math.random() * 0.9 + 0.1;
+        }
+      }
+    }
+  };
+}
+
+// Redirect all login/signup/CTA links to auth/index.html
+document.querySelectorAll('.login-top-btn, .cta-btn, .signup-btn, .gallery-link, .signup-link, .login-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.href = 'auth/index.html';
+  });
+});
+
+// Update login form handling to redirect to auth/index.html
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  window.location.href = 'auth/index.html';
+});
