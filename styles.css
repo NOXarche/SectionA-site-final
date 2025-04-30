@@ -733,3 +733,113 @@ footer {
   .logo { font-size: 1rem; }
   .blueprint-img { width: 98vw; }
 }
+/* New Astronomical Animations and Effects */
+
+#starfield {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: transparent;
+}
+
+.parallax-asteroid {
+  position: fixed;
+  left: 10vw;
+  top: 30vh;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
+}
+
+/* Enhanced parallax and animations */
+.parallax-bg, .parallax-mid, .parallax-fg, .parallax-rover {
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(.4,2,.6,1);
+}
+
+.hero {
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1);
+  will-change: transform;
+}
+
+/* Comet animation */
+@keyframes cometTrail {
+  0% { 
+    opacity: 0;
+    transform: translateX(-100vw) translateY(-50vh) rotate(15deg);
+  }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { 
+    opacity: 0;
+    transform: translateX(100vw) translateY(50vh) rotate(15deg);
+  }
+}
+
+.comet {
+  position: fixed;
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #fff, #fff);
+  box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation: cometTrail 8s linear infinite;
+  animation-delay: 3s;
+}
+
+.comet::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* Accessibility toggle for animations */
+.reduce-motion {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--card-bg);
+  color: var(--highlight);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.reduce-motion:hover {
+  opacity: 1;
+}
+
+body.reduced-motion .parallax-bg,
+body.reduced-motion .parallax-mid,
+body.reduced-motion .parallax-fg,
+body.reduced-motion .parallax-rover,
+body.reduced-motion .parallax-asteroid,
+body.reduced-motion #starfield,
+body.reduced-motion .comet,
+body.reduced-motion .hero {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
