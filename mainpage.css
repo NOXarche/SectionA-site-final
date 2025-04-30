@@ -16,7 +16,6 @@
   --transition: 0.4s cubic-bezier(.4,2,.6,1);
 }
 
-/* Martian Parallax Background */
 body {
   margin: 0;
   font-family: var(--orbitron);
@@ -28,7 +27,7 @@ body {
   perspective: 1200px;
 }
 
-/* Parallax Martian Layers */
+/* Martian Parallax Background */
 .martian-bg {
   position: fixed;
   z-index: 0;
@@ -228,8 +227,6 @@ body.scrolled .section {
   align-items: stretch;
   flex-wrap: wrap;
 }
-
-/* ... keep your existing .announcements-section, .schedule-section, etc. ... */
 
 @media (max-width: 900px) {
   .section { max-width: 97vw; }
