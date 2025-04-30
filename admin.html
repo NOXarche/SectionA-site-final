@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | JU Civil Martian</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="admin.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</head>
+<body>
+  <!-- Dynamic Mars background -->
+  <canvas id="star-bg"></canvas>
+  <div class="orbit-container">
+    <div class="orbit orbit1"></div>
+    <div class="orbit orbit2"></div>
+    <div class="orbit orbit3"></div>
+    <div class="orbit-rocket"><span>🚀</span></div>
+  </div>
+  <div class="martian-bg">
+    <div class="bg-stars"></div>
+    <div class="bg-mountains"></div>
+    <div class="bg-dust"></div>
+  </div>
+
+  <div class="admin-section">
+    <h1 class="admin-title">Admin Dashboard</h1>
+    <button class="neon-btn" id="gotoMainBtn">See Home</button>
+
+    <div class="admin-cards">
+
+      <!-- Announcements -->
+      <div class="admin-card float-card">
+        <h2>Post Announcement</h2>
+        <form id="announcementForm">
+          <input type="text" id="annTitle" placeholder="Title" required/>
+          <textarea id="annDesc" placeholder="Description" required></textarea>
+          <input type="date" id="annDate" required/>
+          <select id="annPriority" required>
+            <option value="">Priority</option>
+            <option value="high">High</option>
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+          </select>
+          <button type="submit" class="neon-btn">Upload</button>
+        </form>
+      </div>
+
+      <!-- Gallery -->
+      <div class="admin-card float-card">
+        <h2>Add Gallery Image</h2>
+        <form id="galleryForm">
+          <input type="text" id="galleryTitle" placeholder="Title" required/>
+          <input type="file" id="galleryImg" accept="image/*" required/>
+          <button type="submit" class="neon-btn">Upload</button>
+        </form>
+      </div>
+
+      <!-- Resources -->
+      <div class="admin-card float-card">
+        <h2>Add Resource</h2>
+        <form id="resourceForm">
+          <input type="text" id="resourceTitle" placeholder="Title" required/>
+          <input type="url" id="resourceLink" placeholder="Resource Link (or leave empty to upload PDF)"/>
+          <input type="file" id="resourcePdf" accept="application/pdf"/>
+          <button type="submit" class="neon-btn">Upload</button>
+        </form>
+      </div>
+
+      <!-- Schedule/Event -->
+      <div class="admin-card float-card">
+        <h2>Add Event/Schedule</h2>
+        <form id="eventForm">
+          <input type="text" id="eventTitle" placeholder="Title" required/>
+          <textarea id="eventDesc" placeholder="Description" required></textarea>
+          <input type="date" id="eventDate" required/>
+          <button type="submit" class="neon-btn">Upload</button>
+        </form>
+      </div>
+    </div>
+    <div id="adminAlert" class="alert"></div>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>
