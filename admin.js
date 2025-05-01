@@ -52,7 +52,7 @@ function spawnFallingStar() {
 }
 setInterval(spawnFallingStar, 300);
 
-// ANNOUNCEMENT FORM
+// --- ANNOUNCEMENT FORM ---
 document.getElementById('announcementForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('annTitle').value.trim();
@@ -69,7 +69,7 @@ document.getElementById('announcementForm').onsubmit = async function(e) {
   }
 };
 
-// GALLERY FORM
+// --- GALLERY FORM ---
 document.getElementById('galleryForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('galleryTitle').value.trim();
@@ -87,7 +87,7 @@ document.getElementById('galleryForm').onsubmit = async function(e) {
   }
 };
 
-// RESOURCE FORM
+// --- RESOURCE FORM ---
 document.getElementById('resourceForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('resourceTitle').value.trim();
@@ -110,7 +110,7 @@ document.getElementById('resourceForm').onsubmit = async function(e) {
   }
 };
 
-// SCHEDULE/EVENT FORM
+// --- SCHEDULE/EVENT FORM ---
 document.getElementById('eventForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('eventTitle').value.trim();
@@ -127,7 +127,7 @@ document.getElementById('eventForm').onsubmit = async function(e) {
   }
 };
 
-// EVENTS FORM (for events collection)
+// --- EVENTS FORM (for events collection) ---
 document.getElementById('eventsForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('eventsTitle').value.trim();
