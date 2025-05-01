@@ -85,11 +85,11 @@ let darkMode = true;
 themeToggle.onclick = () => {
   darkMode = !darkMode;
   document.body.classList.toggle('light', !darkMode);
-  themeToggle.textContent = darkMode ? "🌑" : "☀️";
+  themeToggle.innerHTML = darkMode ? "<span>🌓</span> Theme" : "<span>🌞</span> Theme";
 };
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
   document.body.classList.add('light');
-  themeToggle.textContent = "☀️";
+  themeToggle.innerHTML = "<span>🌞</span> Theme";
   darkMode = false;
 }
 
