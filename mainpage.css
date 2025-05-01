@@ -4,20 +4,127 @@
   --secondary: #1a1a2e;
   --accent: #3c1518;
   --glass-bg: rgba(28,24,40,0.85);
+  --glass-bg-light: rgba(255,255,255,0.88);
+  --card-bg: rgba(28,24,40,0.95);
   --neon: #ff8a00;
   --neon-glow: 0 0 8px #ff8a00, 0 0 24px #ff8a00cc;
   --text: #f3f3f3;
+  --text-light: #fff9;
+  --bg: #1a1a2e;
+  --bg-alt: #3c1518;
   --orbitron: 'Orbitron', 'Audiowide', 'Roboto', sans-serif;
+  --transition: 0.4s cubic-bezier(.4,2,.6,1);
 }
 
+/* Astronomical Parallax Background */
 body {
   margin: 0;
   font-family: var(--orbitron);
-  background: linear-gradient(180deg, var(--secondary) 0%, var(--accent) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
   perspective: 1200px;
+}
+
+#meteor-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.martian-bg {
+  position: fixed;
+  z-index: 0;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-stars, .bg-mountains, .bg-dust {
+  position: absolute; left: 0; width: 100%; pointer-events: none;
+}
+.bg-stars {
+  top: 0; height: 100vh;
+  background: url('https://svgshare.com/i/16zT.svg') repeat-x top;
+  opacity: 0.3;
+  animation: starsMove 180s linear infinite;
+  z-index: 1;
+}
+@keyframes starsMove { 0%{background-position-x:0;} 100%{background-position-x:1000px;} }
+.bg-mountains {
+  bottom: 0; height: 60vh;
+  background: url('https://svgshare.com/i/16uG.svg') repeat-x bottom;
+  background-size: cover;
+  opacity: 0.7;
+  animation: mountainsMove 60s linear infinite;
+  z-index: 1;
+}
+@keyframes mountainsMove { 0%{background-position-x:0;} 100%{background-position-x:1000px;} }
+.bg-dust {
+  bottom: 0; height: 40vh;
+  background: url('https://svgshare.com/i/16uH.svg') repeat-x bottom;
+  background-size: cover;
+  opacity: 0.7;
+  animation: dustMove 24s linear infinite;
+  z-index: 1;
+}
+@keyframes dustMove { 0%{background-position-x:0;} 100%{background-position-x:1200px;} }
+
+/* Orbits and Rocket */
+.orbit-container {
+  position: fixed;
+  left: 50vw; top: 40vh;
+  pointer-events: none;
+  z-index: 2;
+}
+.orbit {
+  position: absolute;
+  border: 1.5px dashed #ff8a00aa;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: orbit-spin 24s linear infinite;
+}
+.orbit1 { width: 220px; height: 220px; margin-left: -110px; margin-top: -110px; animation-duration: 24s;}
+.orbit2 { width: 320px; height: 320px; margin-left: -160px; margin-top: -160px; animation-duration: 32s;}
+.orbit3 { width: 400px; height: 400px; margin-left: -200px; margin-top: -200px; animation-duration: 44s;}
+@keyframes orbit-spin { 100% { transform: rotate(360deg); } }
+.orbit-planet {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 38px; height: 38px;
+  margin-left: -19px; margin-top: -19px;
+  background: radial-gradient(circle at 60% 40%, #ff8a00 60%, #c1440e 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 24px 8px #ff8a00aa;
+  z-index: 3;
+  animation: planet-bounce 3s ease-in-out infinite;
+}
+@keyframes planet-bounce {
+  0%,100% { transform: translateY(0);}
+  50% { transform: translateY(-18px);}
+}
+.orbit-rocket {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  animation: rocket-orbit 12s linear infinite;
+}
+.orbit-rocket span {
+  font-size: 2.7rem;
+  filter: drop-shadow(0 0 8px #ff8a00cc);
+}
+@keyframes rocket-orbit {
+  0% { transform: translate(-50%, -50%) rotate(0deg) translateX(110px) rotate(0deg);}
+  100% { transform: translate(-50%, -50%) rotate(360deg) translateX(110px) rotate(-360deg);}
+}
+
+/* Parallax zoom on scroll */
+body.scrolled .mainpage-grid {
+  transform: scale(1.04) translateY(-30px) rotateX(4deg);
+  transition: transform 0.5s cubic-bezier(.4,2,.6,1);
 }
 
 /* HEADER / NAVBAR */
@@ -46,7 +153,7 @@ body {
   display: flex;
   gap: 1em;
 }
-.nav-btn {
+.nav-btn, .footer-btn {
   background: #2a1a1e;
   color: var(--neon);
   border: 2px solid var(--neon);
@@ -55,12 +162,13 @@ body {
   font-family: var(--orbitron);
   font-size: 1.1em;
   cursor: pointer;
-  margin-left: 0.3em;
+  margin: 0.2em 0.5em;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px #ff8a0033;
 }
-.nav-btn span { margin-right: 0.4em; }
-.nav-btn.active, .nav-btn:focus, .nav-btn:hover {
+.nav-btn span, .footer-btn span { margin-right: 0.4em; }
+.nav-btn.active, .nav-btn:focus, .nav-btn:hover,
+.footer-btn.active, .footer-btn:focus, .footer-btn:hover {
   background: var(--neon);
   color: #fff;
   box-shadow: 0 4px 16px #ff8a00cc;
@@ -69,24 +177,25 @@ body {
 .logout-btn { border-color: #ff3b30; color: #ff3b30; }
 .logout-btn:hover { background: #ff3b30; color: #fff; }
 
-.greeting-type {
+/* FOOTER */
+.footer {
+  margin-top: 3em;
+  padding: 2em 0 1em 0;
   text-align: center;
+  background: var(--glass-bg);
+  border-radius: 1.2em 1.2em 0 0;
+  box-shadow: 0 -2px 20px #ff8a0033;
+}
+.footer-links {
+  margin-bottom: 1em;
+}
+.footer-credit {
+  color: #ff8a00;
+  font-size: 1.1em;
   font-family: var(--orbitron);
-  font-size: 2.6rem;
-  color: var(--neon);
-  margin-bottom: 2.5em;
-  letter-spacing: 0.03em;
-  text-shadow: 0 2px 10px #ff8a0044;
 }
-.type-cursor {
-  display: inline-block;
-  width: 1ch;
-  animation: blink 1s infinite;
-  color: #fff;
-  font-weight: bold;
-}
-@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
 
+/* CARDS & CONTENT */
 .mainpage-grid {
   display: flex;
   flex-direction: column;
@@ -127,7 +236,6 @@ body {
   vertical-align: middle;
   margin-right: 0.2em;
 }
-
 .announcements-controls, .subsection-btn-group {
   display: flex;
   gap: 1em;
@@ -157,7 +265,6 @@ body {
   background: #ff8a00cc;
   color: #fff;
 }
-
 .announcements-feed, .events-list {
   display: flex;
   flex-direction: column;
@@ -189,7 +296,6 @@ body {
   color: #ff8a00;
   font-family: var(--orbitron);
 }
-
 .schedule-timeline {
   margin-top: 1.2em;
   display: flex;
@@ -210,7 +316,6 @@ body {
 }
 .schedule-time { font-family: var(--orbitron); color: var(--neon); font-size: 1.12em; min-width: 90px; }
 .schedule-location { color: #ff8a00; margin-left: auto; font-size: 1em; }
-
 .resources-list {
   list-style: none;
   padding: 0;
@@ -233,7 +338,6 @@ body {
   text-decoration: none;
 }
 .resources-list li a:hover { text-decoration: underline; }
-
 .gallery-carousel {
   display: flex;
   overflow-x: auto;
@@ -263,7 +367,6 @@ body {
   font-family: var(--orbitron);
   font-size: 1.15em;
 }
-
 .countdown-section {
   margin-top: 1.5em;
   text-align: center;
@@ -284,7 +387,6 @@ body {
   letter-spacing: 0.04em;
   box-shadow: 0 2px 8px #ff8a0033;
 }
-
 .bubble-content {
   font-size: 1.13em;
   color: #fff9;
@@ -294,7 +396,6 @@ body {
   margin-top: 0.7em;
   box-shadow: 0 2px 12px #ff8a0033;
 }
-
 .projects-grid {
   display: flex;
   flex-wrap: wrap;
@@ -313,7 +414,6 @@ body {
 .project-title { color: var(--neon); font-weight: bold; font-size: 1.13em; }
 .project-team { color: #ff8a00; }
 .project-status { font-size: 0.95em; color: #fff9; }
-
 .weather-widget {
   background: #221c31ee;
   border-radius: 0.8em;
@@ -328,40 +428,23 @@ body {
 .weather-icon { font-size: 2em; }
 .weather-temp { color: var(--neon); font-size: 1.2em; font-family: var(--orbitron); }
 .weather-desc { color: #ff8a00; }
-
-/* FOOTER */
-.footer {
-  margin-top: 3em;
-  padding: 2em 0 1em 0;
+.greeting-type {
   text-align: center;
-  background: var(--glass-bg);
-  border-radius: 1.2em 1.2em 0 0;
-  box-shadow: 0 -2px 20px #ff8a0033;
-}
-.footer-links {
-  margin-bottom: 1em;
-}
-.footer-btn {
-  background: #2a1a1e;
+  font-family: var(--orbitron);
+  font-size: 2.6rem;
   color: var(--neon);
-  border: 2px solid var(--neon);
-  border-radius: 0.8em;
-  padding: 0.4em 1.2em;
-  font-family: var(--orbitron);
-  font-size: 1em;
-  cursor: pointer;
-  margin: 0 0.5em;
-  transition: background 0.2s, color 0.2s;
+  margin-bottom: 2.5em;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 10px #ff8a0044;
 }
-.footer-btn:hover {
-  background: var(--neon);
+.type-cursor {
+  display: inline-block;
+  width: 1ch;
+  animation: blink 1s infinite;
   color: #fff;
+  font-weight: bold;
 }
-.footer-credit {
-  color: #ff8a00;
-  font-size: 1.1em;
-  font-family: var(--orbitron);
-}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
 
 @media (max-width: 900px) {
   .mainpage-grid { max-width: 98vw; }
@@ -371,4 +454,7 @@ body {
   .mainpage-grid { gap: 1.2em; }
   .mp-card { padding: 1.1em 0.5em; }
   .greeting-type { font-size: 1.3rem; }
+  .navbar { flex-direction: column; padding: 0.5em 0.7em; }
+  .logo-title { font-size: 1.1rem; }
+  .footer { padding: 1.1em 0 0.7em 0; }
 }
