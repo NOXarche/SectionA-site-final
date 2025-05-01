@@ -215,33 +215,47 @@ document.querySelectorAll('.sub-btn').forEach(btn => {
   };
 });
 
-// --- FIXED SCHEDULE: Use collectionGroup for nested schedule collections ---
+// --- UPDATED SCHEDULE RENDERING USING collectionGroup ---
 function renderSchedule(subsection) {
-  db.collectionGroup('schedule')
+  console.log(`Fetching schedule for subsection: ${subsection}`);
+  
+  db.collectionGroup('schedule')  // Changed from collection to collectionGroup
     .where('subsection', '==', subsection)
     .orderBy('date', 'asc')
-    .onSnapshot(snapshot => {
-      const timeline = document.getElementById('scheduleTimeline');
-      timeline.innerHTML = '';
-      if (snapshot.empty) {
-        timeline.innerHTML = '<div class="schedule-item">No schedule found for this subsection.</div>';
-        return;
+    .onSnapshot(
+      (snapshot) => {
+        console.log(`Received ${snapshot.size} schedule items`);
+        const timeline = document.getElementById('scheduleTimeline');
+        timeline.innerHTML = '';
+        
+        if (snapshot.empty) {
+          console.log('No schedule items found');
+          timeline.innerHTML = '<div class="schedule-item">No schedule found for this subsection.</div>';
+          return;
+        }
+        
+        snapshot.forEach(doc => {
+          console.log('Schedule item:', doc.id, doc.data());
+          const s = doc.data();
+          const div = document.createElement('div');
+          div.className = 'schedule-item';
+          div.innerHTML = `
+            <div>
+              <span class="schedule-time">${s.date || ''}${s.time ? ' ' + s.time : ''}</span>
+              <span class="schedule-title">${s.title || ''}</span>
+            </div>
+            <div class="schedule-desc">${s.desc || ''}</div>
+            <div class="schedule-location">${s.location ? '📍 ' + s.location : ''}</div>
+          `;
+          timeline.appendChild(div);
+        });
+      },
+      (error) => {
+        console.error('Error fetching schedule:', error);
+        const timeline = document.getElementById('scheduleTimeline');
+        timeline.innerHTML = `<div class="schedule-item">Error loading schedule: ${error.message}</div>`;
       }
-      snapshot.forEach(doc => {
-        const s = doc.data();
-        const div = document.createElement('div');
-        div.className = 'schedule-item';
-        div.innerHTML = `
-          <div>
-            <span class="schedule-time">${s.date || ''}${s.time ? ' ' + s.time : ''}</span>
-            <span class="schedule-title">${s.title || ''}</span>
-          </div>
-          <div class="schedule-desc">${s.desc || ''}</div>
-          <div class="schedule-location">${s.location ? '📍 ' + s.location : ''}</div>
-        `;
-        timeline.appendChild(div);
-      });
-    });
+    );
 }
 
 // --- Resources ---
