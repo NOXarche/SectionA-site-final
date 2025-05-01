@@ -214,6 +214,7 @@ document.querySelectorAll('.sub-btn').forEach(btn => {
     renderSchedule(btn.dataset.sub);
   };
 });
+
 function renderSchedule(subsection) {
   db.collection('schedule')
     .where('subsection', '==', subsection)
@@ -221,13 +222,22 @@ function renderSchedule(subsection) {
     .get().then(snapshot => {
       const timeline = document.getElementById('scheduleTimeline');
       timeline.innerHTML = '';
+      if (snapshot.empty) {
+        timeline.innerHTML = '<div class="schedule-item">No schedule found for this subsection.</div>';
+        return;
+      }
       snapshot.forEach(doc => {
         const s = doc.data();
         const div = document.createElement('div');
         div.className = 'schedule-item';
-        div.innerHTML = `<span class="schedule-time">${s.date || ''}</span>
-          <span>${s.title || ''}</span>
-          <span class="schedule-location">${s.location || ''}</span>`;
+        div.innerHTML = `
+          <div>
+            <span class="schedule-time">${s.date || ''}${s.time ? ' ' + s.time : ''}</span>
+            <span class="schedule-title">${s.title || ''}</span>
+          </div>
+          <div class="schedule-desc">${s.desc || ''}</div>
+          <div class="schedule-location">${s.location ? '📍 ' + s.location : ''}</div>
+        `;
         timeline.appendChild(div);
       });
     });
@@ -274,7 +284,7 @@ db.collection("events").orderBy("date", "asc")
       const e = doc.data();
       events.push(e);
       const li = document.createElement('li');
-      li.innerHTML = `<span>${e.date || ""}</span> <span>${e.title || ""}</span> <span>${e.desc || ""}</span>`;
+      li.innerHTML = `<span>${e.date || ""} ${e.time || ""}</span> <span>${e.title || ""}</span> <span>${e.desc || ""}</span>`;
       list.appendChild(li);
     });
     renderEventCountdown();
@@ -286,12 +296,12 @@ function renderEventCountdown() {
     timerEl.textContent = "No upcoming events";
     return;
   }
-  // Find the next event with a future date
+  // Find the next event with a future date/time
   const now = new Date();
   let nextEvent = null;
   for (let e of events) {
     if (e.date) {
-      const eventDate = new Date(e.date + "T00:00:00");
+      const eventDate = new Date(`${e.date}T${e.time || "00:00"}:00`);
       if (eventDate > now) {
         nextEvent = eventDate;
         break;
