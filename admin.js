@@ -117,9 +117,10 @@ document.getElementById('eventForm').onsubmit = async function(e) {
   const title = document.getElementById('eventTitle').value.trim();
   const desc = document.getElementById('eventDesc').value.trim();
   const date = document.getElementById('eventDate').value;
-  if (!title || !desc || !date) return showAlert("All fields required!");
+  const subsection = document.getElementById('eventSubsection').value;
+  if (!title || !desc || !date || !subsection) return showAlert("All fields required!");
   try {
-    await db.collection('schedule').add({ title, desc, date });
+    await db.collection('schedule').add({ title, desc, date, subsection });
     showAlert("Event/Schedule uploaded!", "#1bbf3b");
     this.reset();
   } catch (err) {
