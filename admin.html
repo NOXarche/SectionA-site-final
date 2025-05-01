@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 <body>
+  <!-- Dynamic Martian background -->
   <canvas id="star-bg"></canvas>
   <div class="orbit-container">
     <div class="orbit orbit1"></div>
@@ -47,23 +47,22 @@
         </form>
       </div>
 
-      <!-- Gallery -->
+      <!-- Gallery (URL only) -->
       <div class="admin-card float-card">
         <h2>Add Gallery Image</h2>
         <form id="galleryForm">
           <input type="text" id="galleryTitle" placeholder="Title" required/>
-          <input type="file" id="galleryImg" accept="image/*" required/>
+          <input type="url" id="galleryImgUrl" placeholder="Image URL (paste Firebase Storage link or any image URL)" required/>
           <button type="submit" class="neon-btn">Upload</button>
         </form>
       </div>
 
-      <!-- Resources -->
+      <!-- Resources (URL only) -->
       <div class="admin-card float-card">
         <h2>Add Resource</h2>
         <form id="resourceForm">
           <input type="text" id="resourceTitle" placeholder="Title" required/>
-          <input type="url" id="resourceLink" placeholder="Resource Link (or leave empty to upload PDF)"/>
-          <input type="file" id="resourcePdf" accept="application/pdf"/>
+          <input type="url" id="resourceUrl" placeholder="Resource URL (PDF or any link)" required/>
           <button type="submit" class="neon-btn">Upload</button>
         </form>
       </div>
