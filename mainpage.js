@@ -215,11 +215,12 @@ document.querySelectorAll('.sub-btn').forEach(btn => {
   };
 });
 
+// --- FIXED SCHEDULE RENDERING (REALTIME, ALL FIELDS) ---
 function renderSchedule(subsection) {
   db.collection('schedule')
     .where('subsection', '==', subsection)
     .orderBy('date', 'asc')
-    .get().then(snapshot => {
+    .onSnapshot(snapshot => {
       const timeline = document.getElementById('scheduleTimeline');
       timeline.innerHTML = '';
       if (snapshot.empty) {
