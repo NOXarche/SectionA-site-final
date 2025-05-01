@@ -10,6 +10,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <!-- Dynamic Astronomical Background -->
   <canvas id="star-bg"></canvas>
   <div class="orbit-container">
     <div class="orbit orbit1"></div>
@@ -23,18 +24,18 @@
     <div class="bg-mountains"></div>
     <div class="bg-dust"></div>
   </div>
-  <nav class="navbar">
+  <header class="navbar glassy">
     <div class="logo-title">
       <span class="logo">🪐</span>
       <span class="site-title">Martian Civils</span>
       <span class="year">(2024–28)</span>
     </div>
-    <div class="nav-actions">
-      <button class="icon-btn" id="profileBtn" title="Profile">👤</button>
-      <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌑</button>
-      <button class="logout-btn icon-btn" id="logoutBtn" title="Logout">⎋</button>
-    </div>
-  </nav>
+    <nav class="nav-actions">
+      <button class="nav-btn" id="profileBtn"><span>👤</span> Profile</button>
+      <button class="nav-btn" id="themeToggle"><span>🌓</span> Theme</button>
+      <button class="nav-btn logout-btn" id="logoutBtn"><span>⎋</span> Logout</button>
+    </nav>
+  </header>
   <div class="section">
     <h2 id="userGreeting" class="greeting-type"></h2>
     <div class="mainpage-grid">
@@ -93,12 +94,12 @@
         <div class="mp-card-header"><span class="mp-icon">☀️</span>Martian Weather</div>
         <div class="weather-widget" id="weatherWidget"></div>
       </div>
-
     </div>
   </div>
   <footer class="footer glassy">
     <div class="footer-links">
-      <a href="#">Contact</a> | <a href="#">About</a>
+      <button class="footer-btn">Contact</button>
+      <button class="footer-btn">About</button>
     </div>
     <div class="footer-credit">Made for <span class="neon">JU Martian Civils</span></div>
   </footer>
