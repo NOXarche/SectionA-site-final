@@ -58,9 +58,9 @@ if (!roll) {
       return;
     }
     const data = userDoc.data();
-    document.getElementById('userGreeting').textContent = `Hi, ${data.name}! 🚀`;
+    typeGreeting(`Hi, ${data.name}! 🚀`);
     window.userSubsection = data.subsection || "A1";
-    document.getElementById('subsectionSelect').value = window.userSubsection;
+    setActiveSubsectionBtn(window.userSubsection);
     if (data.role === "admin") {
       window.location.href = "/admin.html";
     }
@@ -93,19 +93,41 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matc
   darkMode = false;
 }
 
+// --- Animated Personalized Greeting ---
+function typeGreeting(text) {
+  const el = document.getElementById('userGreeting');
+  el.innerHTML = "";
+  let i = 0;
+  function type() {
+    el.innerHTML = text.slice(0, i) + '<span class="type-cursor">|</span>';
+    if (i < text.length) {
+      i++;
+      setTimeout(type, 60);
+    } else {
+      el.innerHTML = text + '<span class="type-cursor">|</span>';
+    }
+  }
+  type();
+}
+
 // --- Announcements ---
 let announcements = [];
 db.collection("announcements").orderBy("date", "desc")
   .onSnapshot(snapshot => {
     announcements = [];
     snapshot.forEach(doc => announcements.push(doc.data()));
-    renderAnnouncements(document.getElementById('announcementFilter').value || "all");
+    renderAnnouncements(currentAnnFilter);
   });
 
-document.getElementById('announcementFilter').onchange = function() {
-  renderAnnouncements(this.value);
-};
-
+let currentAnnFilter = "all";
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.onclick = function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAnnFilter = btn.dataset.filter;
+    renderAnnouncements(currentAnnFilter);
+  };
+});
 function renderAnnouncements(filter = "all") {
   const feed = document.getElementById('announcementsFeed');
   feed.innerHTML = "";
@@ -118,21 +140,34 @@ function renderAnnouncements(filter = "all") {
   }
   filtered.forEach(a => {
     const div = document.createElement('li');
-    div.className = "announcement " + (a.priority || "");
+    div.className = "announcement-card " + (a.priority || "");
     div.innerHTML = `
-      <span class="priority">${a.priority ? a.priority.toUpperCase() : ""}</span>
-      <span class="date">${a.date || ""}</span>
-      <span>${a.title || ""}: ${a.desc || ""}</span>
+      <div class="announcement-left">
+        <span class="priority">${a.priority ? a.priority.toUpperCase() : ""}</span>
+        <span class="date">${a.date || ""}</span>
+      </div>
+      <div class="announcement-content">
+        <div class="announcement-title">${a.title || ""}</div>
+        <div class="announcement-desc">${a.desc || ""}</div>
+      </div>
     `;
     feed.appendChild(div);
   });
 }
 
 // --- Schedule: Filter by user's subsection ---
-document.getElementById('subsectionSelect').addEventListener('change', function() {
-  renderSchedule(this.value);
+function setActiveSubsectionBtn(sub) {
+  document.querySelectorAll('.sub-btn').forEach(btn => {
+    if (btn.dataset.sub === sub) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+}
+document.querySelectorAll('.sub-btn').forEach(btn => {
+  btn.onclick = function() {
+    setActiveSubsectionBtn(btn.dataset.sub);
+    renderSchedule(btn.dataset.sub);
+  };
 });
-
 function renderSchedule(subsection) {
   db.collection('schedule')
     .where('subsection', '==', subsection)
@@ -172,26 +207,71 @@ db.collection("gallery").orderBy("uploadedAt", "desc")
     carousel.innerHTML = "";
     snapshot.forEach(doc => {
       const g = doc.data();
-      const img = document.createElement('img');
-      img.src = g.imgUrl;
-      img.alt = g.title || "Gallery Image";
-      img.className = "carousel-img";
-      carousel.appendChild(img);
+      const imgDiv = document.createElement('div');
+      imgDiv.className = "gallery-img-card";
+      imgDiv.innerHTML = `
+        <img src="${g.imgUrl}" alt="${g.title || "Gallery"}" class="carousel-img"/>
+        <div class="gallery-img-title">${g.title || ""}</div>
+      `;
+      carousel.appendChild(imgDiv);
     });
   });
 
-// --- Events ---
+// --- Events & Countdown ---
+let events = [];
 db.collection("events").orderBy("date", "asc")
   .onSnapshot(snapshot => {
+    events = [];
     const list = document.getElementById('eventsList');
     list.innerHTML = "";
     snapshot.forEach(doc => {
       const e = doc.data();
+      events.push(e);
       const li = document.createElement('li');
       li.innerHTML = `<span>${e.date || ""}</span> <span>${e.title || ""}</span> <span>${e.desc || ""}</span>`;
       list.appendChild(li);
     });
+    renderEventCountdown();
   });
+
+function renderEventCountdown() {
+  const timerEl = document.getElementById('eventCountdown');
+  if (!events.length) {
+    timerEl.textContent = "No upcoming events";
+    return;
+  }
+  // Find the next event with a future date
+  const now = new Date();
+  let nextEvent = null;
+  for (let e of events) {
+    if (e.date) {
+      const eventDate = new Date(e.date + "T00:00:00");
+      if (eventDate > now) {
+        nextEvent = eventDate;
+        break;
+      }
+    }
+  }
+  if (!nextEvent) {
+    timerEl.textContent = "No upcoming events";
+    return;
+  }
+  function updateCountdown() {
+    const now = new Date();
+    const diff = nextEvent - now;
+    if (diff <= 0) {
+      timerEl.textContent = "Happening now!";
+      return;
+    }
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const mins = Math.floor((diff / (1000*60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    timerEl.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+    setTimeout(updateCountdown, 1000);
+  }
+  updateCountdown();
+}
 
 // --- Martian Daily Knowledge ---
 const facts = [
@@ -206,23 +286,6 @@ function renderKnowledgeBubble() {
   document.getElementById('knowledgeBubble').textContent = facts[idx];
 }
 renderKnowledgeBubble();
-
-// --- Student Corner ---
-const studentMemories = [
-  { text: "First Martian group project was a blast!", name: "Aditi" },
-  { text: "Loved the Mars Rover demo in the lab.", name: "Rahul" },
-  { text: "The Martian quiz night was epic!", name: "Priya" },
-  { text: "Red sand, red bricks, red hearts.", name: "Team A3" }
-];
-let memoryIdx = 0;
-function renderStudentCorner() {
-  const mem = studentMemories[memoryIdx];
-  document.getElementById('studentCorner').innerHTML = `"${mem.text}"<br>– ${mem.name}`;
-  memoryIdx = (memoryIdx + 1) % studentMemories.length;
-  setTimeout(renderStudentCorner, 6000);
-}
-renderStudentCorner();
-document.getElementById('submitMemoryBtn').onclick = () => alert("Submit your memory (admin approval required, integrate with Firebase)!");
 
 // --- Projects & Clubs (static for demo) ---
 const projects = [
