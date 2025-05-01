@@ -12,7 +12,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 <body>
-  <!-- Dynamic Mars background -->
+  <!-- Dynamic Martian background -->
   <canvas id="star-bg"></canvas>
   <div class="orbit-container">
     <div class="orbit orbit1"></div>
@@ -77,6 +77,12 @@
           <input type="text" id="eventTitle" placeholder="Title" required/>
           <textarea id="eventDesc" placeholder="Description" required></textarea>
           <input type="date" id="eventDate" required/>
+          <select id="eventSubsection" required>
+            <option value="">Subsection</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="A3">A3</option>
+          </select>
           <button type="submit" class="neon-btn">Upload</button>
         </form>
       </div>
