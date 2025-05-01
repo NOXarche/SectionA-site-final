@@ -215,9 +215,9 @@ document.querySelectorAll('.sub-btn').forEach(btn => {
   };
 });
 
-// --- FIXED SCHEDULE RENDERING (REALTIME, ALL FIELDS) ---
+// --- FIXED SCHEDULE: Use collectionGroup for nested schedule collections ---
 function renderSchedule(subsection) {
-  db.collection('schedule')
+  db.collectionGroup('schedule')
     .where('subsection', '==', subsection)
     .orderBy('date', 'asc')
     .onSnapshot(snapshot => {
