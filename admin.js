@@ -98,17 +98,19 @@ document.getElementById('resourceForm').onsubmit = async function(e) {
   }
 };
 
-// --- SCHEDULE/EVENT FORM ---
-document.getElementById('eventForm').onsubmit = async function(e) {
+// --- SCHEDULE FORM ---
+document.getElementById('scheduleForm').onsubmit = async function(e) {
   e.preventDefault();
-  const title = document.getElementById('eventTitle').value.trim();
-  const desc = document.getElementById('eventDesc').value.trim();
-  const date = document.getElementById('eventDate').value;
-  const subsection = document.getElementById('eventSubsection').value;
-  if (!title || !desc || !date || !subsection) return showAlert("All fields required!");
+  const title = document.getElementById('scheduleTitle').value.trim();
+  const desc = document.getElementById('scheduleDesc').value.trim();
+  const date = document.getElementById('scheduleDate').value;
+  const time = document.getElementById('scheduleTime').value;
+  const location = document.getElementById('scheduleLocation').value.trim();
+  const subsection = document.getElementById('scheduleSubsection').value;
+  if (!title || !desc || !date || !time || !location || !subsection) return showAlert("All fields required!");
   try {
-    await db.collection('schedule').add({ title, desc, date, subsection });
-    showAlert("Event/Schedule uploaded!", "#1bbf3b");
+    await db.collection('schedule').add({ title, desc, date, time, location, subsection });
+    showAlert("Schedule uploaded!", "#1bbf3b");
     this.reset();
   } catch (err) {
     showAlert("Error: " + err.message);
@@ -121,9 +123,10 @@ document.getElementById('eventsForm').onsubmit = async function(e) {
   const title = document.getElementById('eventsTitle').value.trim();
   const desc = document.getElementById('eventsDesc').value.trim();
   const date = document.getElementById('eventsDate').value;
-  if (!title || !date) return showAlert("All fields required!");
+  const time = document.getElementById('eventsTime').value;
+  if (!title || !date || !time) return showAlert("All fields required!");
   try {
-    await db.collection('events').add({ title, desc, date });
+    await db.collection('events').add({ title, desc, date, time });
     showAlert("Event uploaded!", "#1bbf3b");
     this.reset();
   } catch (err) {
