@@ -10,7 +10,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 document.getElementById('gotoMainBtn').onclick = () => window.location.href = "mainpage.html";
 
@@ -69,41 +68,30 @@ document.getElementById('announcementForm').onsubmit = async function(e) {
   }
 };
 
-// --- GALLERY FORM ---
+// --- GALLERY FORM (URL only) ---
 document.getElementById('galleryForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('galleryTitle').value.trim();
-  const file = document.getElementById('galleryImg').files[0];
-  if (!title || !file) return showAlert("All fields required!");
+  const imgUrl = document.getElementById('galleryImgUrl').value.trim();
+  if (!title || !imgUrl) return showAlert("All fields required!");
   try {
-    const storageRef = storage.ref('gallery/' + Date.now() + '_' + file.name);
-    const snap = await storageRef.put(file);
-    const imgUrl = await snap.ref.getDownloadURL();
     await db.collection('gallery').add({ title, imgUrl, uploadedAt: new Date().toISOString() });
-    showAlert("Gallery image uploaded!", "#1bbf3b");
+    showAlert("Gallery image URL saved!", "#1bbf3b");
     this.reset();
   } catch (err) {
     showAlert("Error: " + err.message);
   }
 };
 
-// --- RESOURCE FORM ---
+// --- RESOURCE FORM (URL only) ---
 document.getElementById('resourceForm').onsubmit = async function(e) {
   e.preventDefault();
   const title = document.getElementById('resourceTitle').value.trim();
-  const link = document.getElementById('resourceLink').value.trim();
-  const file = document.getElementById('resourcePdf').files[0];
-  if (!title) return showAlert("Title required!");
+  const url = document.getElementById('resourceUrl').value.trim();
+  if (!title || !url) return showAlert("All fields required!");
   try {
-    let url = link;
-    if (!url && file) {
-      const storageRef = storage.ref('resources/' + Date.now() + '_' + file.name);
-      const snap = await storageRef.put(file);
-      url = await snap.ref.getDownloadURL();
-    }
-    if (!url) return showAlert("Provide a link or upload a PDF!");
     await db.collection('resources').add({ title, url, uploadedAt: new Date().toISOString() });
-    showAlert("Resource uploaded!", "#1bbf3b");
+    showAlert("Resource URL saved!", "#1bbf3b");
     this.reset();
   } catch (err) {
     showAlert("Error: " + err.message);
