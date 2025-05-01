@@ -1,3 +1,49 @@
+// --- Meteor Shower Canvas Animation ---
+const meteorCanvas = document.getElementById('meteor-bg');
+const ctx = meteorCanvas.getContext('2d');
+let meteors = [];
+function resizeMeteorCanvas() {
+  meteorCanvas.width = window.innerWidth;
+  meteorCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeMeteorCanvas);
+resizeMeteorCanvas();
+function spawnMeteor() {
+  const angle = Math.PI / 2.5 + (Math.random() - 0.5) * 0.2;
+  const speed = 7 + Math.random() * 4;
+  meteors.push({
+    x: Math.random() * meteorCanvas.width,
+    y: -30,
+    dx: Math.cos(angle) * speed,
+    dy: Math.sin(angle) * speed,
+    len: 90 + Math.random() * 60,
+    alpha: 0.7 + Math.random() * 0.3,
+    width: 2 + Math.random() * 2
+  });
+}
+setInterval(spawnMeteor, 650);
+function drawMeteors() {
+  ctx.clearRect(0, 0, meteorCanvas.width, meteorCanvas.height);
+  for (let m of meteors) {
+    ctx.save();
+    ctx.globalAlpha = m.alpha;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = m.width;
+    ctx.shadowColor = "#ff8a00";
+    ctx.shadowBlur = 16;
+    ctx.beginPath();
+    ctx.moveTo(m.x, m.y);
+    ctx.lineTo(m.x - m.dx * m.len, m.y - m.dy * m.len);
+    ctx.stroke();
+    ctx.restore();
+    m.x += m.dx;
+    m.y += m.dy;
+  }
+  meteors = meteors.filter(m => m.x > -200 && m.y < meteorCanvas.height + 200);
+  requestAnimationFrame(drawMeteors);
+}
+drawMeteors();
+
 // --- Dynamic Falling Stars ---
 function spawnFallingStar() {
   const star = document.createElement('div');
