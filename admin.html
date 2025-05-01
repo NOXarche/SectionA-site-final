@@ -6,13 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="admin.css"/>
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 <body>
-  <!-- Dynamic Martian background -->
   <canvas id="star-bg"></canvas>
   <div class="orbit-container">
     <div class="orbit orbit1"></div>
@@ -86,6 +84,18 @@
           <button type="submit" class="neon-btn">Upload</button>
         </form>
       </div>
+
+      <!-- Standalone Event (optional, for events collection) -->
+      <div class="admin-card float-card">
+        <h2>Add Standalone Event</h2>
+        <form id="eventsForm">
+          <input type="text" id="eventsTitle" placeholder="Title" required/>
+          <textarea id="eventsDesc" placeholder="Description"></textarea>
+          <input type="date" id="eventsDate" required/>
+          <button type="submit" class="neon-btn">Upload</button>
+        </form>
+      </div>
+
     </div>
     <div id="adminAlert" class="alert"></div>
   </div>
