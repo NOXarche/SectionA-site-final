@@ -8,10 +8,8 @@
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400,700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <!-- Dynamic Martian background -->
   <canvas id="star-bg"></canvas>
   <div class="orbit-container">
     <div class="orbit orbit1"></div>
@@ -38,91 +36,64 @@
     </div>
   </nav>
   <div class="section">
-    <h2 id="userGreeting">Hi, Martian!</h2>
-    <!-- Announcements -->
-    <div class="announcements-section glassy float-card">
-      <h3 class="neon">Live Announcements</h3>
-      <div class="announcements-controls">
-        <select id="announcementFilter">
-          <option value="all">All</option>
-          <option value="today">Today</option>
-          <option value="high">High Priority</option>
-        </select>
+    <h2 id="userGreeting" class="greeting-type"></h2>
+    <div class="mainpage-grid">
+
+      <div class="mp-card announcements-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">📢</span>Live Announcements</div>
+        <div class="announcements-controls">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="today">Today</button>
+          <button class="filter-btn" data-filter="high">High Priority</button>
+        </div>
+        <ul class="announcements-feed" id="announcementsFeed"></ul>
       </div>
-      <ul class="announcements-feed" id="announcementsFeed"></ul>
-    </div>
-    <!-- Today's Schedule -->
-    <div class="schedule-section glassy float-card">
-      <h3 class="neon">Today's Schedule</h3>
-      <div class="subsection-picker">
-        <label for="subsectionSelect">Subsection:</label>
-        <select id="subsectionSelect">
-          <option value="A1">A1</option>
-          <option value="A2">A2</option>
-          <option value="A3">A3</option>
-        </select>
+
+      <div class="mp-card schedule-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">📅</span>Today's Schedule</div>
+        <div class="subsection-btn-group" id="subsectionBtns">
+          <button class="sub-btn active" data-sub="A1">A1</button>
+          <button class="sub-btn" data-sub="A2">A2</button>
+          <button class="sub-btn" data-sub="A3">A3</button>
+        </div>
+        <div class="schedule-timeline" id="scheduleTimeline"></div>
       </div>
-      <div class="schedule-timeline" id="scheduleTimeline"></div>
-    </div>
-    <!-- Resources -->
-    <div class="resources-section glassy float-card">
-      <h3 class="neon">Resources</h3>
-      <ul class="resources-list" id="resourcesList"></ul>
-    </div>
-    <!-- Gallery -->
-    <div class="gallery-preview-section glassy float-card">
-      <h3 class="neon">Gallery</h3>
-      <div class="gallery-carousel" id="galleryCarousel"></div>
-      <a href="#" class="gallery-link">View Full Gallery →</a>
-    </div>
-    <!-- Teachers -->
-    <div class="teachers-section glassy float-card">
-      <h3 class="neon">Teachers</h3>
-      <div id="teachersList"></div>
-    </div>
-    <!-- Memories -->
-    <div class="memories-section glassy float-card">
-      <h3 class="neon">Memories</h3>
-      <div id="memoriesList"></div>
-    </div>
-    <!-- Semester Schedule -->
-    <div class="semester-section glassy float-card">
-      <h3 class="neon">Semester Schedule</h3>
-      <div id="semesterSchedule"></div>
-    </div>
-    <!-- Events -->
-    <div class="events-section glassy float-card">
-      <h3 class="neon">Events</h3>
-      <ul class="events-list" id="eventsList"></ul>
-    </div>
-    <!-- Martian Daily Knowledge -->
-    <div class="knowledge-bubble glassy float-card">
-      <h3 class="neon">Martian Daily Knowledge</h3>
-      <div class="bubble-content" id="knowledgeBubble"></div>
-    </div>
-    <!-- Upcoming Event -->
-    <div class="events-countdown glassy float-card">
-      <h3 class="neon">Upcoming Event</h3>
-      <div class="event-title" id="upcomingEventTitle"></div>
-      <div class="countdown-timer" id="countdownTimer"></div>
-      <button class="small-btn" id="rsvpBtn">RSVP</button>
-      <button class="small-btn" id="addCalendarBtn">Add to Calendar</button>
-    </div>
-    <!-- Student Corner -->
-    <div class="student-corner-section glassy float-card">
-      <h3 class="neon">Student Corner</h3>
-      <div class="student-corner-content" id="studentCorner"></div>
-      <button class="small-btn" id="submitMemoryBtn">Submit your own</button>
-    </div>
-    <!-- Projects & Clubs -->
-    <div class="projects-section glassy float-card">
-      <h3 class="neon">Projects & Clubs</h3>
-      <div class="projects-grid" id="projectsGrid"></div>
-    </div>
-    <!-- Weather -->
-    <div class="weather-section glassy float-card">
-      <h3 class="neon">Martian Weather</h3>
-      <div class="weather-widget" id="weatherWidget"></div>
+
+      <div class="mp-card resources-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">📚</span>Resources</div>
+        <ul class="resources-list" id="resourcesList"></ul>
+      </div>
+
+      <div class="mp-card gallery-preview-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">🖼️</span>Gallery</div>
+        <div class="gallery-carousel" id="galleryCarousel"></div>
+        <a href="#" class="gallery-link">View Full Gallery →</a>
+      </div>
+
+      <div class="mp-card events-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">🎉</span>Events</div>
+        <ul class="events-list" id="eventsList"></ul>
+        <div class="countdown-section">
+          <span class="countdown-label">Next Event In:</span>
+          <span id="eventCountdown" class="countdown-timer"></span>
+        </div>
+      </div>
+
+      <div class="mp-card knowledge-bubble float-card">
+        <div class="mp-card-header"><span class="mp-icon">🧠</span>Martian Daily Knowledge</div>
+        <div class="bubble-content" id="knowledgeBubble"></div>
+      </div>
+
+      <div class="mp-card projects-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">🛠️</span>Projects & Clubs</div>
+        <div class="projects-grid" id="projectsGrid"></div>
+      </div>
+
+      <div class="mp-card weather-section float-card">
+        <div class="mp-card-header"><span class="mp-icon">☀️</span>Martian Weather</div>
+        <div class="weather-widget" id="weatherWidget"></div>
+      </div>
+
     </div>
   </div>
   <footer class="footer glassy">
