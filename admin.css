@@ -21,7 +21,6 @@ body {
   transition: background 0.7s, color 0.7s;
 }
 
-/* Dynamic Starfield (falling stars) */
 #star-bg {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
@@ -46,7 +45,6 @@ body {
   100% { opacity: 0; transform: translateY(100vh) scaleX(1) rotate(10deg);}
 }
 
-/* Orbits and Rocket */
 .orbit-container {
   position: fixed;
   left: 50vw; top: 40vh;
@@ -80,7 +78,6 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg) translateX(110px) rotate(-360deg);}
 }
 
-/* Parallax Martian Background */
 .martian-bg {
   position: fixed;
   z-index: 1;
