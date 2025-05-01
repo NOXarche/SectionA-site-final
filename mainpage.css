@@ -20,6 +20,55 @@ body {
   perspective: 1200px;
 }
 
+/* HEADER / NAVBAR */
+.navbar {
+  position: sticky;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8em 2em;
+  background: var(--glass-bg);
+  box-shadow: 0 2px 24px #ff8a0033;
+}
+.logo-title {
+  display: flex; align-items: center; gap: 1em;
+  font-family: var(--orbitron);
+  font-size: 1.3rem;
+  color: var(--neon);
+  letter-spacing: 0.05em;
+}
+.logo { font-size: 2rem; }
+.site-title { font-weight: bold; }
+.year { color: #fff7; font-size: 1rem; margin-left: 0.5em; }
+.nav-actions {
+  display: flex;
+  gap: 1em;
+}
+.nav-btn {
+  background: #2a1a1e;
+  color: var(--neon);
+  border: 2px solid var(--neon);
+  border-radius: 0.8em;
+  padding: 0.5em 1.1em;
+  font-family: var(--orbitron);
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-left: 0.3em;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #ff8a0033;
+}
+.nav-btn span { margin-right: 0.4em; }
+.nav-btn.active, .nav-btn:focus, .nav-btn:hover {
+  background: var(--neon);
+  color: #fff;
+  box-shadow: 0 4px 16px #ff8a00cc;
+  border-color: var(--neon);
+}
+.logout-btn { border-color: #ff3b30; color: #ff3b30; }
+.logout-btn:hover { background: #ff3b30; color: #fff; }
+
 .greeting-type {
   text-align: center;
   font-family: var(--orbitron);
@@ -279,6 +328,40 @@ body {
 .weather-icon { font-size: 2em; }
 .weather-temp { color: var(--neon); font-size: 1.2em; font-family: var(--orbitron); }
 .weather-desc { color: #ff8a00; }
+
+/* FOOTER */
+.footer {
+  margin-top: 3em;
+  padding: 2em 0 1em 0;
+  text-align: center;
+  background: var(--glass-bg);
+  border-radius: 1.2em 1.2em 0 0;
+  box-shadow: 0 -2px 20px #ff8a0033;
+}
+.footer-links {
+  margin-bottom: 1em;
+}
+.footer-btn {
+  background: #2a1a1e;
+  color: var(--neon);
+  border: 2px solid var(--neon);
+  border-radius: 0.8em;
+  padding: 0.4em 1.2em;
+  font-family: var(--orbitron);
+  font-size: 1em;
+  cursor: pointer;
+  margin: 0 0.5em;
+  transition: background 0.2s, color 0.2s;
+}
+.footer-btn:hover {
+  background: var(--neon);
+  color: #fff;
+}
+.footer-credit {
+  color: #ff8a00;
+  font-size: 1.1em;
+  font-family: var(--orbitron);
+}
 
 @media (max-width: 900px) {
   .mainpage-grid { max-width: 98vw; }
