@@ -44,15 +44,39 @@ body {
 }
 .bg-stars, .bg-mountains, .bg-dust {
   position: absolute; left: 0; width: 100%; pointer-events: none;
+  will-change: transform;
 }
 .bg-stars {
   top: 0; height: 100vh;
-  background: url('https://svgshare.com/i/16zT.svg') repeat-x top;
-  opacity: 0.3;
+  background: 
+    url('https://svgshare.com/i/16zT.svg') repeat-x top,
+    radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, white, rgba(0,0,0,0));
+  background-repeat: repeat-x, repeat, repeat, repeat, repeat;
+  background-size: 1000px 100%, 200px 200px, 200px 200px, 200px 200px, 200px 200px;
+  opacity: 0.5;
   animation: starsMove 180s linear infinite;
   z-index: 1;
 }
 @keyframes starsMove { 0%{background-position-x:0;} 100%{background-position-x:1000px;} }
+
+.bg-stars-bottom {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%; height: 60vh;
+  background: radial-gradient(1px 1px at 25px 5px, white, rgba(0,0,0,0)),
+              radial-gradient(1px 1px at 50px 25px, white, rgba(0,0,0,0)),
+              radial-gradient(1px 1px at 125px 20px, white, rgba(0,0,0,0)),
+              radial-gradient(1px 1px at 150px 50px, white, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+}
+
 .bg-mountains {
   bottom: 0; height: 60vh;
   background: url('https://svgshare.com/i/16uG.svg') repeat-x bottom;
@@ -121,9 +145,9 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg) translateX(110px) rotate(-360deg);}
 }
 
-/* Parallax zoom on scroll */
+/* Parallax zoom on scroll - modified to prevent trembling */
 body.scrolled .mainpage-grid {
-  transform: scale(1.04) translateY(-30px) rotateX(4deg);
+  transform: scale(1.02) translateY(-20px);
   transition: transform 0.5s cubic-bezier(.4,2,.6,1);
 }
 
@@ -204,6 +228,7 @@ body.scrolled .mainpage-grid {
   max-width: 900px;
   margin: 0 auto;
   padding-bottom: 5em;
+  will-change: transform;
 }
 .mp-card {
   width: 100%;
@@ -254,6 +279,8 @@ body.scrolled .mainpage-grid {
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px #ff8a0033;
   outline: none;
+  z-index: 5;
+  position: relative;
 }
 .filter-btn.active, .sub-btn.active {
   background: var(--neon);
@@ -311,11 +338,13 @@ body.scrolled .mainpage-grid {
   border-left: 6px solid var(--neon);
   box-shadow: 0 2px 12px #ff8a0033;
   display: flex;
-  gap: 2em;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.8em;
 }
-.schedule-time { font-family: var(--orbitron); color: var(--neon); font-size: 1.12em; min-width: 90px; }
-.schedule-location { color: #ff8a00; margin-left: auto; font-size: 1em; }
+.schedule-time { font-family: var(--orbitron); color: var(--neon); font-size: 1.12em; }
+.schedule-title { font-weight: bold; }
+.schedule-desc { color: #fff9; font-size: 0.95em; }
+.schedule-location { color: #ff8a00; font-size: 0.95em; }
 .resources-list {
   list-style: none;
   padding: 0;
@@ -445,6 +474,20 @@ body.scrolled .mainpage-grid {
   font-weight: bold;
 }
 @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* Removed 3D tilt animation to make buttons clickable */
+.float-card {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.float-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 16px 64px #ff8a0033, 0 6px 32px #1a1a2e88, 0 0 24px #ff8a00cc;
+}
+/* Ensure buttons are always clickable */
+.float-card button, .float-card a {
+  position: relative;
+  z-index: 10;
+}
 
 @media (max-width: 900px) {
   .mainpage-grid { max-width: 98vw; }
