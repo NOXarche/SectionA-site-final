@@ -44,40 +44,35 @@ function drawMeteors() {
 }
 drawMeteors();
 
-// --- Dynamic Falling Stars ---
-function spawnFallingStar() {
-  const star = document.createElement('div');
-  star.className = 'falling-star';
-  star.style.left = `${Math.random() * 100}vw`;
-  star.style.top = `${Math.random() * 10}vh`;
-  star.style.opacity = Math.random() * 0.5 + 0.5;
-  star.style.width = `${1.5 + Math.random() * 2}px`;
-  star.style.height = `${18 + Math.random() * 18}px`;
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 2600);
+// --- Improved Parallax Scrolling ---
+function updateParallax() {
+  const scrollY = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollPercentage = Math.min(scrollY / maxScroll, 0.95);
+  
+  const stars = document.querySelector('.bg-stars');
+  const starsBottom = document.querySelector('.bg-stars-bottom');
+  const mountains = document.querySelector('.bg-mountains');
+  const dust = document.querySelector('.bg-dust');
+  
+  if (stars) stars.style.transform = `translateY(${scrollY * 0.1}px)`;
+  if (starsBottom) starsBottom.style.transform = `translateY(${scrollY * -0.05}px)`;
+  if (mountains) mountains.style.transform = `translateY(${scrollY * 0.2}px)`;
+  if (dust) dust.style.transform = `translateY(${scrollY * 0.3}px)`;
+  
+  // Only apply zoom effect if not near the bottom
+  if (scrollPercentage < 0.95) {
+    if (scrollY > 40) document.body.classList.add('scrolled');
+    else document.body.classList.remove('scrolled');
+  } else {
+    // Remove the effect when near the bottom to prevent trembling
+    document.body.classList.remove('scrolled');
+  }
+  
+  requestAnimationFrame(updateParallax);
 }
-setInterval(spawnFallingStar, 300);
-
-// --- Parallax Zoom/Scroll ---
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 40) document.body.classList.add('scrolled');
-  else document.body.classList.remove('scrolled');
-});
-
-// --- Floating Card 3D Animation ---
-document.querySelectorAll('.float-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width/2;
-    const y = e.clientY - rect.top - rect.height/2;
-    card.style.transform = `perspective(1200px) rotateY(${x/18}deg) rotateX(${-y/18}deg) scale(1.03)`;
-    card.style.boxShadow = "0 16px 64px #ff8a0033, 0 6px 32px #1a1a2e88, 0 0 24px #ff8a00cc";
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = "";
-    card.style.boxShadow = "";
-  });
-});
+// Start the parallax animation
+updateParallax();
 
 // --- Firebase config ---
 const firebaseConfig = {
@@ -219,7 +214,7 @@ document.querySelectorAll('.sub-btn').forEach(btn => {
 function renderSchedule(subsection) {
   console.log(`Fetching schedule for subsection: ${subsection}`);
   
-  db.collectionGroup('schedule')  // Changed from collection to collectionGroup
+  db.collectionGroup('schedule')  // Using collectionGroup to query across all subcollections
     .where('subsection', '==', subsection)
     .orderBy('date', 'asc')
     .onSnapshot(
@@ -240,10 +235,8 @@ function renderSchedule(subsection) {
           const div = document.createElement('div');
           div.className = 'schedule-item';
           div.innerHTML = `
-            <div>
-              <span class="schedule-time">${s.date || ''}${s.time ? ' ' + s.time : ''}</span>
-              <span class="schedule-title">${s.title || ''}</span>
-            </div>
+            <div class="schedule-time">${s.date || ''}${s.time ? ' ' + s.time : ''}</div>
+            <div class="schedule-title">${s.title || ''}</div>
             <div class="schedule-desc">${s.desc || ''}</div>
             <div class="schedule-location">${s.location ? '📍 ' + s.location : ''}</div>
           `;
@@ -385,3 +378,16 @@ document.getElementById('weatherWidget').innerHTML = `
   <span class="weather-temp">-60°C</span>
   <span class="weather-desc">Sunny, thin atmosphere</span>
 `;
+
+// --- Simplified Card Hover (No 3D tilt) ---
+document.querySelectorAll('.float-card').forEach(card => {
+  // Replace the mousemove event with simpler hover
+  card.addEventListener('mouseenter', () => {
+    card.style.transform = 'scale(1.02)';
+    card.style.boxShadow = "0 16px 64px #ff8a0033, 0 6px 32px #1a1a2e88, 0 0 24px #ff8a00cc";
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = "";
+    card.style.boxShadow = "";
+  });
+});
